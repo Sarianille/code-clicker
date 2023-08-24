@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: f2feca9e8ccfd67488c7ffb93b66325f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - LOCCount: {instanceID: 0}
+  - keyboardVer1: {fileID: 21300000, guid: a1125eafccd5fa74e97e145a16de1709, type: 3}
+  - keyboardVer2: {fileID: 21300000, guid: 63d0898fa5673fe44b7f77d481ed70e4, type: 3}
+  - keyboardVer3: {fileID: 21300000, guid: a40d4366a1a9574418f53dbd04a44c3f, type: 3}
+  - keyboardVer4: {fileID: 21300000, guid: b300abb876a4fb44080685febfb3ba9b, type: 3}
+  - keyboardVer5: {fileID: 21300000, guid: afe6e06e3aef28d4cbd3d188ff81547b, type: 3}
+  - keyboardVer6: {fileID: 21300000, guid: 8dff678b46948454da141d20422aee30, type: 3}
+  - keyboard: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
