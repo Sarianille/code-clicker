@@ -19,10 +19,14 @@ public class Settings : MonoBehaviour
     [SerializeField]
     private Sprite keyboardVer6;
     [SerializeField]
-    private Button keyboard;
-    private int currentKeyboardVersion = 0;
+    private Button keyboardButton;
+
     [SerializeField]
     private GameObject settings;
+    [SerializeField]
+    private GameObject scrollView;
+    [SerializeField]
+    private GameObject menu;
 
     [SerializeField]
     private Sprite backgroundVer1;
@@ -36,15 +40,30 @@ public class Settings : MonoBehaviour
     private Sprite backgroundVer5;
     [SerializeField]
     private Sprite backgroundVer6;
-    private int currentBackgroundVersion = 0;
     [SerializeField]
-    private Image background;
+    private Image backgroundImage;
+
+    class Keyboard
+    {
+        public Sprite[] versions;
+        public int currentKeyboardVersion = 0;
+    }
+
+    class Background
+    {
+        public Sprite[] versions;
+        public int currentBackgroundVersion = 0;
+    }
+
+    private Keyboard keyboard = new Keyboard();
+    private Background background = new Background();
 
     // Start is called before the first frame update
     void Start()
     {
-        SetupKeyboard(currentKeyboardVersion);
-        SetupBackground(currentBackgroundVersion);
+        SetupGraphics();
+        SetupKeyboard(keyboard.currentKeyboardVersion);
+        SetupBackground(background.currentBackgroundVersion);
     }
 
     // Update is called once per frame
@@ -53,42 +72,80 @@ public class Settings : MonoBehaviour
         
     }
 
+    public void SetupGraphics() 
+    {
+        keyboard.versions = new Sprite[] { keyboardVer1, keyboardVer2, keyboardVer3, keyboardVer4, keyboardVer5, keyboardVer6 };
+        background.versions = new Sprite[] { backgroundVer1, backgroundVer2, backgroundVer3, backgroundVer4, backgroundVer5, backgroundVer6 };
+    }
+
     public void SelecNexttKeyboard()
     {
-        currentKeyboardVersion++;
+        keyboard.currentKeyboardVersion++;
 
-        if (currentKeyboardVersion > 5)
+        if (keyboard.currentKeyboardVersion > 5)
         {
-            currentKeyboardVersion = 0;
+            keyboard.currentKeyboardVersion = 0;
         }
 
-        SetupKeyboard(currentKeyboardVersion);
+        SetupKeyboard(keyboard.currentKeyboardVersion);
+    }
+
+    public void SelectPreviousKeyboard()
+    {
+        keyboard.currentKeyboardVersion--;
+
+        if (keyboard.currentKeyboardVersion < 0)
+        {
+            keyboard.currentKeyboardVersion = 5;
+        }
+
+        SetupKeyboard(keyboard.currentKeyboardVersion);
     }
 
     public void SetupKeyboard(int version)
     {
-        Sprite[] versions = { keyboardVer1, keyboardVer2, keyboardVer3, keyboardVer4, keyboardVer5, keyboardVer6 };
+        
 
-        keyboard.image.sprite = versions[version];
+        keyboardButton.image.sprite = keyboard.versions[version];
     }
 
     public void SelectNextBackground()
     {
-        currentBackgroundVersion++;
+        background.currentBackgroundVersion++;
 
-        if (currentBackgroundVersion > 5)
+        if (background.currentBackgroundVersion > 5)
         {
-            currentBackgroundVersion = 0;
+            background.currentBackgroundVersion = 0;
         }
 
-        SetupBackground(currentBackgroundVersion);
+        SetupBackground(background.currentBackgroundVersion);
+    }
+
+    public void SelectPreviousBackground() 
+    {
+        background.currentBackgroundVersion--;
+
+        if (background.currentBackgroundVersion < 0)
+        {
+            background.currentBackgroundVersion = 5;
+        }
+
+        SetupBackground(background.currentBackgroundVersion);
     }
 
     public void SetupBackground(int version)
     {
-        Sprite[] versions = { backgroundVer1, backgroundVer2, backgroundVer3, backgroundVer4, backgroundVer5, backgroundVer6 };
+        backgroundImage.sprite = background.versions[version];
+    }
 
-        background.sprite = versions[version];
+    public void OpenMenu()
+    {
+        if (menu != null)
+        {
+            bool isActive = menu.activeSelf;
+            menu.SetActive(!isActive);
+            scrollView.SetActive(isActive);
+        }
     }
 
     public void OpenSetting()
@@ -97,6 +154,7 @@ public class Settings : MonoBehaviour
         {
             bool isActive = settings.activeSelf;
             settings.SetActive(!isActive);
+            menu.SetActive(isActive);
         }
     }
 }
