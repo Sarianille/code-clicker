@@ -24,9 +24,18 @@ public class Settings : MonoBehaviour
     [SerializeField]
     private GameObject settings;
     [SerializeField]
-    private GameObject scrollView;
+    private GameObject shop;
     [SerializeField]
     private GameObject menu;
+    [SerializeField] 
+    private GameObject buildings;
+    [SerializeField] 
+    private GameObject upgrades;
+
+    [SerializeField] 
+    private Button buildingsButton;
+    [SerializeField] 
+    private Button upgradesButton;
 
     [SerializeField]
     private Sprite backgroundVer1;
@@ -138,13 +147,30 @@ public class Settings : MonoBehaviour
         backgroundImage.sprite = background.versions[version];
     }
 
+    public void SwitchBetweenBuildingsAndUpgrades()
+    {
+        if (buildings != null && upgrades != null)
+        {
+            bool isActive = buildings.activeSelf;
+            buildings.SetActive(!isActive);
+            upgrades.SetActive(isActive);
+
+            buildingsButton.interactable = isActive;
+            upgradesButton.interactable = !isActive;
+        }
+    }
+
     public void OpenMenu()
     {
         if (menu != null)
         {
+            if (settings.activeSelf)
+            {
+                settings.SetActive(false);
+            }
             bool isActive = menu.activeSelf;
             menu.SetActive(!isActive);
-            scrollView.SetActive(isActive);
+            shop.SetActive(isActive);
         }
     }
 
