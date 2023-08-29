@@ -3,17 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class Building : MonoBehaviour
 {
     protected ulong LOCAdded;
-    protected int Amount = 0;
+    public int Amount = 0;
     protected ulong BuyCost;
     protected ulong SellCost;
     protected ulong AppearNextMinimum;
+    protected int UpgradeAndConditionCounter = 0;
+    protected GameObject[] upgrades;
+    protected Condition[] conditions;
 
-    [SerializeField]
-    protected Clicker clicker = new Clicker();
+    public Clicker clicker = new Clicker();
     [SerializeField]
     protected GameObject building;
 
@@ -26,7 +29,7 @@ public abstract class Building : MonoBehaviour
 
     public void Buy()
     {
-        if (clicker.currentLOCCount >= BuyCost)
+        if (EnoughMoney(BuyCost))
         {
             clicker.currentLOCCount -= BuyCost;
 
@@ -82,6 +85,38 @@ public abstract class Building : MonoBehaviour
         {
             building.SetActive(true);
             CancelInvoke("AppearNext");
+        }
+    }
+
+    public void AddUpgrade(Building building, GameObject upgrade, ulong amountAdded, ulong cost)
+    {
+        if (EnoughMoney(cost))
+        {
+            building.LOCAdded += amountAdded;
+            clicker.currentLOCCount -= cost;
+            clicker.LOCCount.text = clicker.numberSuffixes.FormatNumber(clicker.currentLOCCount);
+            upgrade.SetActive(false);
+        }
+    }
+
+    public bool EnoughMoney(ulong cost)
+    {
+        return clicker.currentLOCCount >= cost;
+    }
+
+    public abstract void SetupUpgrades();
+    public abstract void SetupConditions();
+    public void ShowUpgrade()
+    {
+        if (conditions[UpgradeAndConditionCounter].IsMet())
+        {
+            upgrades[UpgradeAndConditionCounter].SetActive(true);
+            UpgradeAndConditionCounter++;
+        }
+
+        if (UpgradeAndConditionCounter == upgrades.Length)
+        {
+            CancelInvoke("ShowUpgrade");
         }
     }
 
