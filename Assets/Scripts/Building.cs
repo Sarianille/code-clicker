@@ -8,15 +8,17 @@ using UnityEngine.UI;
 public abstract class Building : MonoBehaviour
 {
     protected ulong LOCAdded;
-    public int Amount = 0;
-    protected ulong BuyCost;
+    public ulong Amount = 0;
+    public ulong BuyCost;
     protected ulong SellCost;
     protected ulong AppearNextMinimum;
+    public float Multiplier = 1;
+
     protected int UpgradeAndConditionCounter = 0;
     protected GameObject[] upgrades;
     protected Condition[] conditions;
 
-    public Clicker clicker = new Clicker();
+    public Clicker clicker;
     [SerializeField]
     protected GameObject building;
 
@@ -67,7 +69,6 @@ public abstract class Building : MonoBehaviour
 
     public void RefreshText()
     {
-        clicker.LOCCount.text = clicker.numberSuffixes.FormatNumber(clicker.currentLOCCount);
         BuyCostText.text = "Buy: " + clicker.numberSuffixes.FormatNumber(BuyCost);
         SellCostText.text = "Sell: " + clicker.numberSuffixes.FormatNumber(SellCost);
         AmountText.text = Amount.ToString();
@@ -75,7 +76,8 @@ public abstract class Building : MonoBehaviour
 
     public void SendLOC()
     {
-        ulong LOC = (ulong)Amount * LOCAdded;
+        ulong LOC = (ulong)((Amount * LOCAdded) * Multiplier);
+
         clicker.LOCPerSecond += LOC;
     }
 
@@ -94,7 +96,6 @@ public abstract class Building : MonoBehaviour
         {
             building.LOCAdded += amountAdded;
             clicker.currentLOCCount -= cost;
-            clicker.LOCCount.text = clicker.numberSuffixes.FormatNumber(clicker.currentLOCCount);
             upgrade.SetActive(false);
         }
     }

@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Condition : MonoBehaviour
+public class Condition
 {
     Building building;
-    int MinAmount;
+    ulong MinAmount;
     ulong MinLOC;
     Condition DependantOn;
 
-    public Condition(Building building, int MinAmount, ulong MinLOC, Condition DependantOn)
+    public Condition(Building building, ulong MinAmount, ulong MinLOC, Condition DependantOn)
     {
         this.building = building;
         this.MinAmount = MinAmount;

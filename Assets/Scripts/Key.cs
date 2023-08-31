@@ -67,4 +67,9 @@ public class Key : Building
 
         InvokeRepeating("ShowUpgrade", 0, 1);
     }
+
+    public ulong GetLOCAdded()
+    {
+        return LOCAdded;
+    }
 }

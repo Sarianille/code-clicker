@@ -14,7 +14,10 @@ public class Clicker : MonoBehaviour
     public ulong LOCPerSecond = 0;
     public TMP_Text LOCPErSecondText;
 
-    public NumberSuffixes numberSuffixes = new NumberSuffixes();
+    public NumberSuffixes numberSuffixes;
+    public Key key;
+    public ulong ClickMultiplier = 1;
+    public ulong ProductionMultiplier = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -36,11 +39,13 @@ public class Clicker : MonoBehaviour
         {
             CancelInvoke("AddFromBuildings");
         }
+
+        LOCCount.text = numberSuffixes.FormatNumber(currentLOCCount);
     }
 
     public void AddFromClick()
     {
-        IncrementLOC(1);
+        IncrementLOC(key.GetLOCAdded() * ClickMultiplier);
         LOCFromClicking++;
     }
 
@@ -48,7 +53,6 @@ public class Clicker : MonoBehaviour
     {
         overallLOCCount += LOCAdded;
         currentLOCCount += LOCAdded;
-        LOCCount.text = numberSuffixes.FormatNumber(currentLOCCount);
     }
 
     private bool BuildingsOwned()
@@ -58,9 +62,10 @@ public class Clicker : MonoBehaviour
 
     private void AddFromBuildings()
     {
-        LOCPErSecondText.text = "+" + numberSuffixes.FormatNumber(LOCPerSecond);
+        ulong LOCAdded = LOCPerSecond * ProductionMultiplier;
+        LOCPErSecondText.text = "+" + numberSuffixes.FormatNumber(LOCAdded);
         LOCPErSecondText.CrossFadeAlpha(1, 0, false);
-        IncrementLOC(LOCPerSecond);
+        IncrementLOC(LOCAdded);
         LOCPerSecond = 0;
         LOCPErSecondText.CrossFadeAlpha(0, 0.8f, false);
     }

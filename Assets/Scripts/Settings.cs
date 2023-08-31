@@ -113,8 +113,6 @@ public class Settings : MonoBehaviour
 
     public void SetupKeyboard(int version)
     {
-        
-
         keyboardButton.image.sprite = keyboard.versions[version];
     }
 
