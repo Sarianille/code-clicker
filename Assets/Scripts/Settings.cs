@@ -31,6 +31,8 @@ public class Settings : MonoBehaviour
     private GameObject buildings;
     [SerializeField] 
     private GameObject upgrades;
+    [SerializeField] 
+    private GameObject achievements;
 
     [SerializeField] 
     private Button buildingsButton;
@@ -162,9 +164,10 @@ public class Settings : MonoBehaviour
     {
         if (menu != null)
         {
-            if (settings.activeSelf)
+            if (settings.activeSelf || achievements.activeSelf)
             {
                 settings.SetActive(false);
+                achievements.SetActive(false);
             }
             bool isActive = menu.activeSelf;
             menu.SetActive(!isActive);
@@ -178,6 +181,16 @@ public class Settings : MonoBehaviour
         {
             bool isActive = settings.activeSelf;
             settings.SetActive(!isActive);
+            menu.SetActive(isActive);
+        }
+    }
+
+    public void OpenAchievements()
+    {
+        if (achievements != null)
+        {
+            bool isActive = achievements.activeSelf;
+            achievements.SetActive(!isActive);
             menu.SetActive(isActive);
         }
     }

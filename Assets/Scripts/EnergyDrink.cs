@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,16 +20,6 @@ public class EnergyDrink : MonoBehaviour
     private GameObject energyDrink;
 
     public Clicker clicker;
-    public Key key;
-    public URandom urandom;
-    public CodeMonkey codeMonkey;
-    public GiftedChild giftedChild;
-    public MFFStudent MFFStudent;
-    public TeamMember teamMember;
-    public ContractorTeam contractorTeam;
-    public Company company;
-    public AI ai;
-    public Building[] buildings;
     public List<Building> ownedBuildings;
 
     private int currentBoost;
@@ -41,22 +32,27 @@ public class EnergyDrink : MonoBehaviour
     void Start()
     {
         energyDrink.transform.localPosition = offSreenPosition;
-        buildings = new Building[] { key, urandom, codeMonkey, giftedChild, MFFStudent, teamMember, contractorTeam, company, ai };
-        InvokeRepeating("AddBuilding", 0, 1);
+
         timerAppear = Random.Range(dropFrequencyMin, dropFrequencyMax);
     }
 
     // Update is called once per frame
     void Update()
     {
-        timerAppear -= Time.deltaTime;
-        timerDisappear -= Time.deltaTime;
-
-        if (!IsOffScreen() && timerDisappear <= 0)
+        if (IsOffScreen())
         {
-            energyDrink.transform.localPosition = offSreenPosition;
+            timerAppear -= Time.deltaTime;
+        }
+        else
+        {
+            timerDisappear -= Time.deltaTime;
 
-            timerDisappear = 20;
+            if (timerDisappear <= 0)
+            {
+                energyDrink.transform.localPosition = offSreenPosition;
+
+                timerDisappear = 20;
+            }
         }
 
         if (timerAppear <= 0)
@@ -66,20 +62,9 @@ public class EnergyDrink : MonoBehaviour
         }
     }
 
-    private void AddBuilding()
+    private void UpdateOwnedBuildings()
     {
-        foreach (var building in buildings) 
-        {
-            if (building.Amount > 0 && !ownedBuildings.Contains(building))
-            {
-                ownedBuildings.Add(building);
-            }
-        }
-
-        if (ownedBuildings.Count == buildings.Length)
-        {
-            CancelInvoke("AddBuilding");
-        }
+        ownedBuildings = clicker.buildings.Where(building => building.Amount > 0).ToList();
     }
 
     private bool IsOffScreen()
@@ -128,6 +113,7 @@ public class EnergyDrink : MonoBehaviour
     private void Add15Percent()
     {
         clicker.IncrementLOC((ulong)(clicker.currentLOCCount * 0.15));
+        clicker.notification.ShowMessage("Energy drink: +15% of your LOC");
     }
 
     private void IncreasedProduction()
@@ -135,6 +121,7 @@ public class EnergyDrink : MonoBehaviour
         if (productionBoostTime == 42)
         {
             clicker.ProductionMultiplier = 10;
+            clicker.notification.ShowMessage("Energy drink: Production x10");
         }
 
         --productionBoostTime;
@@ -152,7 +139,9 @@ public class EnergyDrink : MonoBehaviour
     {
         if (buildingSpecialBoostTime == 30)
         {
+            UpdateOwnedBuildings();
             currentBuilding = Random.Range(0, ownedBuildings.Count);
+            clicker.notification.ShowMessage("Energy drink: Building special");
         }
 
         ownedBuildings[currentBuilding].Multiplier += ((float)(10 * ownedBuildings[currentBuilding].Amount) / 100);
@@ -173,6 +162,7 @@ public class EnergyDrink : MonoBehaviour
         if (clickingBoostTime == 15)
         {
             clicker.ClickMultiplier = 420;
+            clicker.notification.ShowMessage("Energy drink: Clicking x420");
         }
         
         --clickingBoostTime;

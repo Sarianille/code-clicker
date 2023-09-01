@@ -20,7 +20,6 @@ public class AI : Building
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("SendLOC", 0, 1);
         SetupUpgrades();
         SetupConditions();
     }

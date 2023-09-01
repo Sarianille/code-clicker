@@ -74,11 +74,11 @@ public abstract class Building : MonoBehaviour
         AmountText.text = Amount.ToString();
     }
 
-    public void SendLOC()
+    public ulong SendLOC()
     {
         ulong LOC = (ulong)((Amount * LOCAdded) * Multiplier);
 
-        clicker.LOCPerSecond += LOC;
+        return LOC;
     }
 
     public void AppearNext()

@@ -27,7 +27,6 @@ public class TeamMember : Building
     void Start()
     {
         InvokeRepeating("AppearNext", 0, 1);
-        InvokeRepeating("SendLOC", 0, 1);
         SetupUpgrades();
         SetupConditions();
     }
