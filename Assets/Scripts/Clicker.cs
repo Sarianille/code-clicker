@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 
-public class Clicker : MonoBehaviour
+public class Clicker : NetworkBehaviour
 {
     public ulong overallLOCCount = 0;
     public ulong currentLOCCount = 0;
@@ -30,7 +31,7 @@ public class Clicker : MonoBehaviour
     public AI ai;
     public Building[] buildings;
 
-    public Message notification;
+    public Notification notification;
 
     // Start is called before the first frame update
     void Start()
@@ -53,7 +54,7 @@ public class Clicker : MonoBehaviour
             CancelInvoke("AddFromBuildings");
         }
 
-        LOCCount.text = numberSuffixes.FormatNumber(currentLOCCount);
+        ChangeTextOfClientClientRpc();
     }
 
     public void AddFromClick()
@@ -64,8 +65,18 @@ public class Clicker : MonoBehaviour
 
     public void IncrementLOC(ulong LOCAdded)
     {
-        overallLOCCount += LOCAdded;
-        currentLOCCount += LOCAdded;
+        try
+        {
+            checked 
+            {
+                overallLOCCount += LOCAdded;
+                currentLOCCount += LOCAdded;
+            }
+        }
+        catch (OverflowException ex)
+        {
+            //show congrats u broke the game screen
+        }
     }
 
     private bool BuildingsOwned()
@@ -80,6 +91,7 @@ public class Clicker : MonoBehaviour
         LOCPErSecondText.text = "+" + numberSuffixes.FormatNumber(LOCAdded);
         LOCPErSecondText.CrossFadeAlpha(1, 0, false);
         IncrementLOC(LOCAdded);
+        SendLOCToServerServerRpc(LOCAdded);
         LOCPerSecond = 0;
         LOCPErSecondText.CrossFadeAlpha(0, 0.8f, false);
     }
@@ -90,5 +102,17 @@ public class Clicker : MonoBehaviour
         {
             LOCPerSecond += building.SendLOC();
         }
+    }
+
+    [ServerRpc]
+    private void SendLOCToServerServerRpc(ulong LOCAdded)
+    {
+        IncrementLOC(LOCAdded);
+    }
+
+    [ClientRpc]
+    private void ChangeTextOfClientClientRpc()
+    {
+        LOCCount.text = numberSuffixes.FormatNumber(currentLOCCount);
     }
 }

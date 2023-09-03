@@ -29,10 +29,10 @@ public class Achievements : MonoBehaviour
 
         unachievedAchievements = new List<Achievement>
         {
-            new Achievement(clicker.transform.Find("Achievements Scroll/Viewport/Content/Click1").gameObject, (object o) => clicker.clicks >= 1),
-            new Achievement(clicker.transform.Find("Achievements Scroll/Viewport/Content/Click100").gameObject, (object o) => clicker.clicks >= 100),
-            new Achievement(clicker.transform.Find("Achievements Scroll/Viewport/Content/Click10000").gameObject, (object o) => clicker.clicks >= 10000),
-            new Achievement(clicker.transform.Find("Achievements Scroll/Viewport/Content/Click100000").gameObject, (object o) => clicker.clicks >= 100000)
+            new Achievement(this.transform.Find("Achievements Scroll/Viewport/Content/Click1").gameObject, (object o) => clicker.clicks >= 1),
+            new Achievement(this.transform.Find("Achievements Scroll/Viewport/Content/Click100").gameObject, (object o) => clicker.clicks >= 100),
+            new Achievement(this.transform.Find("Achievements Scroll/Viewport/Content/Click10000").gameObject, (object o) => clicker.clicks >= 10000),
+            new Achievement(this.transform.Find("Achievements Scroll/Viewport/Content/Click100000").gameObject, (object o) => clicker.clicks >= 100000)
         };
 
         AddBuildingAchievements();
@@ -60,10 +60,10 @@ public class Achievements : MonoBehaviour
     {
         foreach (var building in clicker.buildings)
         {
-            unachievedAchievements.Add(new Achievement(clicker.transform.Find("Achievements Scroll/Viewport/Content/" + buildingAchievementNames[counter]).gameObject, (object o) => building.Amount >= 1));
-            unachievedAchievements.Add(new Achievement(clicker.transform.Find("Achievements Scroll/Viewport/Content/" + buildingAchievementNames[counter + 1]).gameObject, (object o) => building.Amount >= 5));
-            unachievedAchievements.Add(new Achievement(clicker.transform.Find("Achievements Scroll/Viewport/Content/" + buildingAchievementNames[counter + 2]).gameObject, (object o) => building.Amount >= 25));
-            unachievedAchievements.Add(new Achievement(clicker.transform.Find("Achievements Scroll/Viewport/Content/" + buildingAchievementNames[counter + 3]).gameObject, (object o) => building.Amount >= 50));
+            unachievedAchievements.Add(new Achievement(this.transform.Find("Achievements Scroll/Viewport/Content/" + buildingAchievementNames[counter]).gameObject, (object o) => building.Amount >= 1));
+            unachievedAchievements.Add(new Achievement(this.transform.Find("Achievements Scroll/Viewport/Content/" + buildingAchievementNames[counter + 1]).gameObject, (object o) => building.Amount >= 5));
+            unachievedAchievements.Add(new Achievement(this.transform.Find("Achievements Scroll/Viewport/Content/" + buildingAchievementNames[counter + 2]).gameObject, (object o) => building.Amount >= 25));
+            unachievedAchievements.Add(new Achievement(this.transform.Find("Achievements Scroll/Viewport/Content/" + buildingAchievementNames[counter + 3]).gameObject, (object o) => building.Amount >= 50));
 
             counter += 4;
         }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class Message : MonoBehaviour
+public class Notification : MonoBehaviour
 {
     public GameObject panel;
     public TMP_Text message;
