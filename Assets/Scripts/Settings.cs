@@ -6,88 +6,49 @@ using UnityEngine.UI;
 
 public class Settings : MonoBehaviour
 {
-    [SerializeField]
-    private Sprite keyboardVer1;
-    [SerializeField]
-    private Sprite keyboardVer2;
-    [SerializeField]
-    private Sprite keyboardVer3;
-    [SerializeField]
-    private Sprite keyboardVer4;
-    [SerializeField]
-    private Sprite keyboardVer5;
-    [SerializeField]
-    private Sprite keyboardVer6;
-    [SerializeField]
-    private Button keyboardButton;
+    [SerializeField] private Sprite keyboardVer1;
+    [SerializeField] private Sprite keyboardVer2;
+    [SerializeField] private Sprite keyboardVer3;
+    [SerializeField] private Sprite keyboardVer4;
+    [SerializeField] private Sprite keyboardVer5;
+    [SerializeField] private Sprite keyboardVer6;
+    [SerializeField] private Button keyboardButton;
 
-    [SerializeField]
-    private GameObject settings;
-    [SerializeField]
-    private GameObject shop;
-    [SerializeField]
-    private GameObject menu;
-    [SerializeField]
-    private GameObject buildings;
-    [SerializeField]
-    private GameObject upgrades;
-    [SerializeField]
-    private GameObject achievements;
-    [SerializeField]
-    private GameObject multiplayer;
+    [SerializeField] private GameObject settings;
+    [SerializeField] private GameObject shop;
+    [SerializeField] private GameObject menu;
+    [SerializeField] private GameObject buildings;
+    [SerializeField] private GameObject upgrades;
+    [SerializeField] private GameObject achievements;
+    [SerializeField] private GameObject multiplayer;
 
-    [SerializeField]
-    private Button buildingsButton;
-    [SerializeField]
-    private Button upgradesButton;
-    [SerializeField]
-    private Button achievementsButton;
-    [SerializeField]
-    private Button settingsButton;
-    [SerializeField]
-    private Button backButton;
-    [SerializeField]
-    private Button multiplayerButton;
-    [SerializeField]
-    private Button backMenuButton;
+    [SerializeField] private Button buildingsButton;
+    [SerializeField] private Button upgradesButton;
+    [SerializeField] private Button achievementsButton;
+    [SerializeField] private Button settingsButton;
+    [SerializeField] private Button backButton;
+    [SerializeField] private Button multiplayerButton;
+    [SerializeField] private Button backMenuButton;
 
-    [SerializeField]
-    private Sprite backgroundVer1;
-    [SerializeField]
-    private Sprite backgroundVer2;
-    [SerializeField]
-    private Sprite backgroundVer3;
-    [SerializeField]
-    private Sprite backgroundVer4;
-    [SerializeField]
-    private Sprite backgroundVer5;
-    [SerializeField]
-    private Sprite backgroundVer6;
-    [SerializeField]
-    private Image backgroundImage;
+    [SerializeField] private Sprite backgroundVer1;
+    [SerializeField] private Sprite backgroundVer2;
+    [SerializeField] private Sprite backgroundVer3;
+    [SerializeField] private Sprite backgroundVer4;
+    [SerializeField] private Sprite backgroundVer5;
+    [SerializeField] private Sprite backgroundVer6;
+    [SerializeField] private Image backgroundImage;
 
-    [SerializeField]
-    private GameObject hostButton;
-    [SerializeField]
-    private GameObject joinButton;
-    [SerializeField]
-    private GameObject publicHostButton;
-    [SerializeField]
-    private GameObject privateHostButton;
-    [SerializeField]
-    private GameObject privateHostText;
-    [SerializeField]
-    private GameObject publicJoinButton;
-    [SerializeField]
-    private GameObject privateJoinText;
-    [SerializeField]
-    private GameObject privateJoinInput;
-    [SerializeField]
-    private GameObject backMultiplayer;
-    [SerializeField]
-    private GameObject startGame;
-    [SerializeField]
-    private GameObject playerAmount;
+    [SerializeField] private GameObject hostButton;
+    [SerializeField] private GameObject joinButton;
+    [SerializeField] private GameObject publicHostButton;
+    [SerializeField] private GameObject privateHostButton;
+    [SerializeField] private GameObject privateHostText;
+    [SerializeField] private GameObject publicJoinButton;
+    [SerializeField] private GameObject privateJoinText;
+    [SerializeField] private GameObject privateJoinInput;
+    [SerializeField] private GameObject backMultiplayer;
+    [SerializeField] private GameObject startGame;
+    [SerializeField] private GameObject playerAmount;
 
     class Keyboard
     {

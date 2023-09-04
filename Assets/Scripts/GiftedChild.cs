@@ -3,17 +3,13 @@ using UnityEngine.UI;
 
 public class GiftedChild : Building
 {
-    [SerializeField]
-    private GameObject upgradeFormatter;
+    [SerializeField] private GameObject upgradeFormatter;
     private Condition upgradeFormatterCondition;
-    [SerializeField]
-    private GameObject upgradeAutomatic;
+    [SerializeField] private GameObject upgradeAutomatic;
     private Condition upgradeAutomaticCondition;
-    [SerializeField]
-    private GameObject upgradeLinter;
+    [SerializeField] private GameObject upgradeLinter;
     private Condition upgradeLinterCondition;
-    [SerializeField]
-    private GameObject upgradeCustomRules;
+    [SerializeField] private GameObject upgradeCustomRules;
     private Condition upgradeCustomRulesCondition;
 
     public GiftedChild()

@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Notification : MonoBehaviour
 {
-    public GameObject panel;
-    public TMP_Text message;
+    [SerializeField] private GameObject panel;
+    [SerializeField] private TMP_Text message;
 
     private Vector3 offScreenPosition = new Vector3(-376, 595, 0);
     private Vector3 onScreenPosition = new Vector3(-376, 505, 0);

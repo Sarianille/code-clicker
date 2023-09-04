@@ -3,8 +3,7 @@ using UnityEngine.UI;
 
 public class URandom : Building
 {
-    [SerializeField]
-    private GameObject upgradeHigherThroughput;
+    [SerializeField] private GameObject upgradeHigherThroughput;
     private Condition upgradeHigherThroughputCondition;
 
     public URandom()

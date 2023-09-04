@@ -3,14 +3,11 @@ using UnityEngine.UI;
 
 public class TeamMember : Building
 {
-    [SerializeField]
-    private GameObject upgradePeerReview;
+    [SerializeField] private GameObject upgradePeerReview;
     private Condition upgradePeerReviewCondition;
-    [SerializeField]
-    private GameObject upgradeCodeReview;
+    [SerializeField] private GameObject upgradeCodeReview;
     private Condition upgradeCodeReviewCondition;
-    [SerializeField]
-    private GameObject upgradeSocks;
+    [SerializeField] private GameObject upgradeSocks;
     private Condition upgradeSocksCondition;
 
     public TeamMember()

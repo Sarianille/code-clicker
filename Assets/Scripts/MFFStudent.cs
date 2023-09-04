@@ -3,11 +3,9 @@ using UnityEngine.UI;
 
 public class MFFStudent : Building
 {
-    [SerializeField]
-    private GameObject upgradeCredits;
+    [SerializeField] private GameObject upgradeCredits;
     private Condition upgradeCreditsCondition;
-    [SerializeField]
-    private GameObject upgradeFinalProject;
+    [SerializeField] private GameObject upgradeFinalProject;
     private Condition upgradeFinalProjectCondition;
 
     public MFFStudent()

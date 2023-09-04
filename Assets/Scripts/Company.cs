@@ -3,26 +3,19 @@ using UnityEngine.UI;
 
 public class Company : Building
 {
-    [SerializeField]
-    private GameObject upgradeQuittingVim;
+    [SerializeField] private GameObject upgradeQuittingVim;
     private Condition upgradeQuittingVimCondition;
-    [SerializeField]
-    private GameObject upgradeCoffeeMachine;
+    [SerializeField] private GameObject upgradeCoffeeMachine;
     private Condition upgradeCoffeeMachineCondition;
-    [SerializeField]
-    private GameObject upgradeSnacks;
+    [SerializeField] private GameObject upgradeSnacks;
     private Condition upgradeSnacksCondition;
-    [SerializeField]
-    private GameObject upgradeFreeLunch;
+    [SerializeField] private GameObject upgradeFreeLunch;
     private Condition upgradeFreeLunchCondition;
-    [SerializeField]
-    private GameObject upgradeGym;
+    [SerializeField] private GameObject upgradeGym;
     private Condition upgradeGymCondition;
-    [SerializeField]
-    private GameObject upgradeUgh;
+    [SerializeField] private GameObject upgradeUgh;
     private Condition upgradeUghCondition;
-    [SerializeField]
-    private GameObject upgradeBars;
+    [SerializeField] private GameObject upgradeBars;
     private Condition upgradeBarsCondition;
 
     public Company()

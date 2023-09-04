@@ -20,12 +20,9 @@ public abstract class Building : MonoBehaviour
 
     public Clicker clicker;
 
-    [SerializeField]
-    protected TMP_Text BuyCostText;
-    [SerializeField]
-    protected TMP_Text SellCostText;
-    [SerializeField]
-    protected TMP_Text AmountText;
+    [SerializeField] protected TMP_Text BuyCostText;
+    [SerializeField] protected TMP_Text SellCostText;
+    [SerializeField] protected TMP_Text AmountText;
 
     public abstract void SetupUpgrades();
     public abstract void SetupConditions();

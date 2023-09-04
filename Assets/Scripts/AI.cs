@@ -3,8 +3,7 @@ using UnityEngine.UI;
 
 public class AI : Building
 {
-    [SerializeField]
-    private GameObject upgradeHumanEmotions;
+    [SerializeField] private GameObject upgradeHumanEmotions;
     private Condition upgradeHumanEmotionsCondition;
 
     public AI()

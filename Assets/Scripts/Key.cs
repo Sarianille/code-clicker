@@ -3,20 +3,15 @@ using UnityEngine.UI;
 
 public class Key : Building
 {
-    [SerializeField]
-    private GameObject upgrade10Fingers;
+    [SerializeField] private GameObject upgrade10Fingers;
     private Condition upgrade10FingersCondition;
-    [SerializeField]
-    private GameObject upgradeGoogleAnswers;
+    [SerializeField] private GameObject upgradeGoogleAnswers;
     private Condition upgradeGoogleAnswersCondition;
-    [SerializeField]
-    private GameObject upgradeCopilot;
+    [SerializeField] private GameObject upgradeCopilot;
     private Condition upgradeCopilotCondition;
-    [SerializeField]
-    private GameObject upgradeGPT;
+    [SerializeField] private GameObject upgradeGPT;
     private Condition upgradeGPTCondition;
-    [SerializeField]
-    private GameObject upgradeRefactorCode;
+    [SerializeField] private GameObject upgradeRefactorCode;
     private Condition upgradeRefactorCodeCondition;
 
     public Key()

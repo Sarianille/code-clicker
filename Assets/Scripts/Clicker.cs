@@ -1,10 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using Unity.Netcode;
-using UnityEditor;
 using UnityEngine;
 
 public class Clicker : NetworkBehaviour
@@ -12,28 +9,28 @@ public class Clicker : NetworkBehaviour
     public ulong overallLOCCount = 0;
     public ulong currentLOCCount = 0;
     public ulong clicks = 0;
-    public TMP_Text LOCCount;
+    [SerializeField] private TMP_Text LOCCount;
 
-    public ulong LOCPerSecond = 0;
-    public TMP_Text LOCPErSecondText;
+    private ulong LOCPerSecond = 0;
     private ulong LOCFromOthers = 0;
-    public TMP_Text LOCFromOthersText;
+    [SerializeField] private TMP_Text LOCPerSecondText;
+    [SerializeField] private TMP_Text LOCFromOthersText;
 
-    public NumberSuffixes numberSuffixes;
     public ulong ClickMultiplier = 1;
     public ulong ProductionMultiplier = 1;
 
-    public Key key;
-    public URandom urandom;
-    public CodeMonkey codeMonkey;
-    public GiftedChild giftedChild;
-    public MFFStudent MFFStudent;
-    public TeamMember teamMember;
-    public ContractorTeam contractorTeam;
-    public Company company;
-    public AI ai;
+    [SerializeField] private Key key;
+    [SerializeField] private URandom urandom;
+    [SerializeField] private CodeMonkey codeMonkey;
+    [SerializeField] private GiftedChild giftedChild;
+    [SerializeField] private MFFStudent MFFStudent;
+    [SerializeField] private TeamMember teamMember;
+    [SerializeField] private ContractorTeam contractorTeam;
+    [SerializeField] private Company company;
+    [SerializeField] private AI ai;
     public Building[] buildings;
 
+    public NumberSuffixes numberSuffixes;
     public Notification notification;
 
     public bool isServer;
@@ -105,9 +102,9 @@ public class Clicker : NetworkBehaviour
         SendLOCToServerServerRpc(LOCAdded, isServer);
         ChangeLOCFromOthersClientRpc(LOCFromOthers);
 
-        LOCPErSecondText.text = "+" + numberSuffixes.FormatNumber(LOCAdded);
-        LOCPErSecondText.CrossFadeAlpha(1, 0, false);
-        LOCPErSecondText.CrossFadeAlpha(0, 0.8f, false);
+        LOCPerSecondText.text = "+" + numberSuffixes.FormatNumber(LOCAdded);
+        LOCPerSecondText.CrossFadeAlpha(1, 0, false);
+        LOCPerSecondText.CrossFadeAlpha(0, 0.8f, false);
 
         if (LOCFromOthers != 0)
         {

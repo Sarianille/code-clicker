@@ -10,20 +10,13 @@ public class LobbyManager : MonoBehaviour
     private Lobby hostLobby;
     private Lobby joinedLobby;
 
-    [SerializeField]
-    private Button hostPublic;
-    [SerializeField]
-    private Button hostPrivate;
-    [SerializeField]
-    private Button joinPublic;
-    [SerializeField]
-    private TMP_InputField joinPrivate;
-    [SerializeField]
-    private TMP_Text codeText;
-    [SerializeField]
-    private TMP_Text playerAmount;
-    [SerializeField]
-    private Notification notification;
+    [SerializeField] private Button hostPublic;
+    [SerializeField] private Button hostPrivate;
+    [SerializeField] private Button joinPublic;
+    [SerializeField] private TMP_InputField joinPrivate;
+    [SerializeField] private TMP_Text codeText;
+    [SerializeField] private TMP_Text playerAmount;
+    [SerializeField] private Notification notification;
 
     private LobbyEventCallbacks callbacks;
     private bool isHost = false;

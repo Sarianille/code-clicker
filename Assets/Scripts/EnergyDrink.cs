@@ -14,8 +14,7 @@ public class EnergyDrink : MonoBehaviour
     private float xRange = 845;
     private float yRange = 370;
 
-    [SerializeField]
-    private GameObject energyDrink;
+    [SerializeField] private GameObject energyDrink;
 
     public Clicker clicker;
     private List<Building> ownedBuildings;

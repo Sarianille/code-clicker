@@ -3,11 +3,9 @@ using UnityEngine.UI;
 
 public class CodeMonkey : Building
 {
-    [SerializeField]
-    private GameObject upgradeDvorak;
+    [SerializeField] private GameObject upgradeDvorak;
     private Condition upgradeDvorakCondition;
-    [SerializeField]
-    private GameObject upgradeStyleGuide;
+    [SerializeField] private GameObject upgradeStyleGuide;
     private Condition upgradeStyleGuideCondition;
 
     public CodeMonkey()

@@ -3,14 +3,11 @@ using UnityEngine.UI;
 
 public class ContractorTeam : Building
 {
-    [SerializeField]
-    private GameObject upgradeGitLecture;
+    [SerializeField] private GameObject upgradeGitLecture;
     private Condition upgradeGitLectureCondition;
-    [SerializeField]
-    private GameObject upgradeHomeOffice;
+    [SerializeField] private GameObject upgradeHomeOffice;
     private Condition upgradeHomeOfficeCondition;
-    [SerializeField]
-    private GameObject upgradeRemote;
+    [SerializeField] private GameObject upgradeRemote;
     private Condition upgradeRemoteCondition;
 
     public ContractorTeam()
