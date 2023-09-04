@@ -1,14 +1,12 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class NumberSuffixes : MonoBehaviour
 {
+    private static readonly string[] suffixes = { "", "M", "B", "T", " Quad", " Quin" };
     public string FormatNumber(ulong number)
     {
         string numberString = number.ToString();
-        string[] suffixes = { "", "M", "B", "T", " Quad", " Quin" };
         ulong divisor = 1000000;
         int counter = 0;
 

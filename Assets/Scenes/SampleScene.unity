@@ -3970,7 +3970,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   energyDrink: {fileID: 576983865}
   clicker: {fileID: 1801466481}
-  ownedBuildings: []
 --- !u!114 &233429284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46278,11 +46277,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d1892655c552974895d8a753f271617, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Amount: 0
-  BuyCost: 150000
   Multiplier: 1
   clicker: {fileID: 1801466481}
-  building: {fileID: 4503899342057671377}
   BuyCostText: {fileID: 6126631457569390248}
   SellCostText: {fileID: 6226111234172863418}
   AmountText: {fileID: 6622646823045869346}
@@ -47105,11 +47101,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a211e74293dcb724883fac84b1e0673d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Amount: 0
-  BuyCost: 50000
   Multiplier: 1
   clicker: {fileID: 1801466481}
-  building: {fileID: 7395938029234920190}
   BuyCostText: {fileID: 8769066189604717893}
   SellCostText: {fileID: 2012997634051956733}
   AmountText: {fileID: 75652432180216184}
@@ -47441,11 +47434,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d754f8b5ccbe4da45a09c34991b25deb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Amount: 0
-  BuyCost: 100
   Multiplier: 1
   clicker: {fileID: 1801466481}
-  building: {fileID: 5169418804591494841}
   BuyCostText: {fileID: 3243129637613604358}
   SellCostText: {fileID: 8868470805491441465}
   AmountText: {fileID: 9220400914386131500}
@@ -48514,11 +48504,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e62f92830599f741a9d74ce3b0a8c9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Amount: 0
-  BuyCost: 100000
   Multiplier: 1
   clicker: {fileID: 1801466481}
-  building: {fileID: 4503899342057671377}
   BuyCostText: {fileID: 6498901520350482681}
   SellCostText: {fileID: 4038927311300447950}
   AmountText: {fileID: 1667676889755565178}
@@ -49065,11 +49052,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb4a33b52067463459cf9deead498c46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Amount: 0
-  BuyCost: 2000
   Multiplier: 1
   clicker: {fileID: 1801466481}
-  building: {fileID: 407528543413359338}
   BuyCostText: {fileID: 4452934464497733112}
   SellCostText: {fileID: 5900427583345738684}
   AmountText: {fileID: 4001670406030802302}
@@ -50075,11 +50059,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e74dc7b9b295bc49832fa02b94138ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Amount: 0
-  BuyCost: 10000
   Multiplier: 1
   clicker: {fileID: 1801466481}
-  building: {fileID: 6694761771136011173}
   BuyCostText: {fileID: 573878675681936241}
   SellCostText: {fileID: 2472218276135918040}
   AmountText: {fileID: 1820779788498852678}
@@ -51942,11 +51923,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3b92078fb8c9534b9a63f1aa6a3cb90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Amount: 0
-  BuyCost: 10
   Multiplier: 1
   clicker: {fileID: 1801466481}
-  building: {fileID: 5317999242441823990}
   BuyCostText: {fileID: 4959088908943366491}
   SellCostText: {fileID: 3850839431186562404}
   AmountText: {fileID: 3589472380465211628}
@@ -53165,11 +53143,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0f12695a468df243a9931cddb521d67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Amount: 0
-  BuyCost: 15000
   Multiplier: 1
   clicker: {fileID: 1801466481}
-  building: {fileID: 4834067311964547873}
   BuyCostText: {fileID: 2272743167844673814}
   SellCostText: {fileID: 8766731560469623671}
   AmountText: {fileID: 1982380595453040853}
@@ -53326,11 +53301,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3179d62959b23a49864fff4ce0514d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Amount: 0
-  BuyCost: 500
   Multiplier: 1
   clicker: {fileID: 1801466481}
-  building: {fileID: 7313081043970256679}
   BuyCostText: {fileID: 5152451879640213557}
   SellCostText: {fileID: 1462574693402571130}
   AmountText: {fileID: 1061546052039458666}
@@ -55314,9 +55286,9 @@ RectTransform:
   m_Father: {fileID: 3381381175089870929}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 371.955, y: -85}
   m_SizeDelta: {x: 743.91, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9183063026359969183
