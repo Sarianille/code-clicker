@@ -29,9 +29,6 @@ public class LobbyManager : MonoBehaviour
 
     private void Start()
     {
-        //await UnityServices.InitializeAsync();
-        //await AuthenticationService.Instance.SignInAnonymouslyAsync();
-
         SetupButtons();
         callbacks = new LobbyEventCallbacks();
         callbacks.LobbyChanged += OnLobbyChanged;

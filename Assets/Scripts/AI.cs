@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,30 +10,20 @@ public class AI : Building
     public AI()
     {
         LOCAdded = 100000;
-        LOCAddedDefault = LOCAdded;
         BuyCost = 150000;
-        BuyCostDefault = BuyCost;
         SellCost = 75000;
-        SellCostDefault = SellCost;
-        AppearNextMinimum = 10000000000;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
+        SetupDefaults();
         SetupUpgrades();
         SetupConditions();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public override void SetupUpgrades()
     {
-        upgradeHumanEmotions.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(this, upgradeHumanEmotions, 50000, 10000000));
+        upgradeHumanEmotions.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(upgradeHumanEmotions, 50000, 10000000));
 
         upgrades = new GameObject[] { upgradeHumanEmotions };
     }
@@ -46,6 +34,6 @@ public class AI : Building
 
         conditions = new Condition[] { upgradeHumanEmotionsCondition };
 
-        InvokeRepeating("ShowUpgrade", 0, 1);
+        InvokeRepeating(nameof(ShowUpgrade), 0, 1);
     }
 }

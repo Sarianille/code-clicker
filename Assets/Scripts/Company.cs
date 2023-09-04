@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,36 +28,26 @@ public class Company : Building
     public Company()
     {
         LOCAdded = 50000;
-        LOCAddedDefault = LOCAdded;
         BuyCost = 100000;
-        BuyCostDefault = BuyCost;
         SellCost = 50000;
-        SellCostDefault = SellCost;
-        AppearNextMinimum = 1000000000;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("AppearNext", 0, 1);
+        SetupDefaults();
         SetupUpgrades();
         SetupConditions();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public override void SetupUpgrades()
     {
-        upgradeQuittingVim.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(this, upgradeQuittingVim, 5000, 500000));
-        upgradeCoffeeMachine.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(this, upgradeCoffeeMachine, (ulong)(LOCAdded * 0.2), 1000000));
-        upgradeSnacks.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(this, upgradeSnacks, 5000, 550000));
-        upgradeFreeLunch.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(this, upgradeFreeLunch, 7000, 1000000));
-        upgradeGym.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(this, upgradeGym, 4000, 500000));
-        upgradeUgh.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(this, upgradeUgh, (ulong)(LOCAdded * 0.2), 5000000));
-        upgradeBars.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(this, upgradeBars, (ulong)(LOCAdded * 0.2), 3000000));
+        upgradeQuittingVim.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(upgradeQuittingVim, 5000, 500000));
+        upgradeCoffeeMachine.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(upgradeCoffeeMachine, (ulong)(LOCAdded * 0.2), 1000000));
+        upgradeSnacks.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(upgradeSnacks, 5000, 550000));
+        upgradeFreeLunch.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(upgradeFreeLunch, 7000, 1000000));
+        upgradeGym.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(upgradeGym, 4000, 500000));
+        upgradeUgh.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(upgradeUgh, (ulong)(LOCAdded * 0.2), 5000000));
+        upgradeBars.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(upgradeBars, (ulong)(LOCAdded * 0.2), 3000000));
 
         upgrades = new GameObject[] { upgradeQuittingVim, upgradeCoffeeMachine, upgradeSnacks, upgradeFreeLunch, upgradeGym, upgradeUgh, upgradeBars };
     }
@@ -76,6 +64,6 @@ public class Company : Building
 
         conditions = new Condition[] { upgradeQuittingVimCondition, upgradeCoffeeMachineCondition, upgradeSnacksCondition, upgradeFreeLunchCondition, upgradeGymCondition, upgradeUghCondition, upgradeBarsCondition };
 
-        InvokeRepeating("ShowUpgrade", 0, 1);
+        InvokeRepeating(nameof(ShowUpgrade), 0, 1);
     }
 }

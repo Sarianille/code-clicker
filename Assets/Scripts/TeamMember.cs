@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,33 +16,22 @@ public class TeamMember : Building
     public TeamMember()
     {
         LOCAdded = 5000;
-        LOCAddedDefault = LOCAdded;
         BuyCost = 15000;
-        BuyCostDefault = BuyCost;
         SellCost = 7500;
-        SellCostDefault = SellCost;
-        AppearNextMinimum = 10000000;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("AppearNext", 0, 1);
+        SetupDefaults();
         SetupUpgrades();
         SetupConditions();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public override void SetupUpgrades()
     {
-        upgradePeerReview.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(this, upgradePeerReview, 700, 25000));
-        upgradeCodeReview.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(this, upgradeCodeReview, 1200, 50000));
-        upgradeSocks.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(this, upgradeSocks, (ulong)(LOCAdded * 0.15), 100000));
+        upgradePeerReview.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(upgradePeerReview, 700, 25000));
+        upgradeCodeReview.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(upgradeCodeReview, 1200, 50000));
+        upgradeSocks.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(upgradeSocks, (ulong)(LOCAdded * 0.15), 100000));
 
         upgrades = new GameObject[] { upgradePeerReview, upgradeCodeReview, upgradeSocks };
     }
@@ -57,6 +44,6 @@ public class TeamMember : Building
 
         conditions = new Condition[] { upgradePeerReviewCondition, upgradeCodeReviewCondition, upgradeSocksCondition };
 
-        InvokeRepeating("ShowUpgrade", 0, 1);
+        InvokeRepeating(nameof(ShowUpgrade), 0, 1);
     }
 }

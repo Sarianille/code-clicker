@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,32 +13,21 @@ public class MFFStudent : Building
     public MFFStudent()
     {
         LOCAdded = 1000;
-        LOCAddedDefault = LOCAdded;
         BuyCost = 10000;
-        BuyCostDefault = BuyCost;
         SellCost = 5000;
-        SellCostDefault = SellCost;
-        AppearNextMinimum = 1000000;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("AppearNext", 0, 1);
+        SetupDefaults();
         SetupUpgrades();
         SetupConditions();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public override void SetupUpgrades()
     {
-        upgradeCredits.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(this, upgradeCredits, 500, 5000));
-        upgradeFinalProject.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(this, upgradeFinalProject, (ulong)(LOCAdded * 0.2), 10000));
+        upgradeCredits.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(upgradeCredits, 500, 5000));
+        upgradeFinalProject.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(upgradeFinalProject, (ulong)(LOCAdded * 0.2), 10000));
 
         upgrades = new GameObject[] { upgradeCredits, upgradeFinalProject };
     }
@@ -52,6 +39,6 @@ public class MFFStudent : Building
 
         conditions = new Condition[] { upgradeCreditsCondition, upgradeFinalProjectCondition };
 
-        InvokeRepeating("ShowUpgrade", 0, 1);
+        InvokeRepeating(nameof(ShowUpgrade), 0, 1);
     }
 }

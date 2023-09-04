@@ -1,13 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class Condition
 {
-    Building building;
-    ulong MinAmount;
-    ulong MinLOC;
-    Condition DependantOn;
+    readonly Building building;
+    readonly ulong MinAmount;
+    readonly ulong MinLOC;
+    readonly Condition DependantOn;
 
     public Condition(Building building, ulong MinAmount, ulong MinLOC, Condition DependantOn)
     {
@@ -21,30 +17,12 @@ public class Condition
     {
         if (DependantOn != null)
         {
-            if (DependantOn.IsMet())
-            {
-                return building.Amount >= MinAmount && building.clicker.overallLOCCount >= MinLOC;
-            }
-            else
+            if (!DependantOn.IsMet())
             {
                 return false;
             }
         }
-        else
-        {
-            return building.Amount >= MinAmount && building.clicker.overallLOCCount >= MinLOC;
-        }
-    }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        return building.GetAmount() >= MinAmount && building.clicker.overallLOCCount >= MinLOC;
     }
 }

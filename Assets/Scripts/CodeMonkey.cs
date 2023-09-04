@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,32 +13,21 @@ public class CodeMonkey : Building
     public CodeMonkey()
     {
         LOCAdded = 100;
-        LOCAddedDefault = LOCAdded;
         BuyCost = 500;
-        BuyCostDefault = BuyCost;
         SellCost = 250;
-        SellCostDefault = SellCost;
-        AppearNextMinimum = 10000;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("AppearNext", 0, 1);
+        SetupDefaults();
         SetupUpgrades();
         SetupConditions();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public override void SetupUpgrades()
     {
-        upgradeDvorak.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(this, upgradeDvorak, 10, 100));
-        upgradeStyleGuide.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(this, upgradeStyleGuide, 50, 1000));
+        upgradeDvorak.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(upgradeDvorak, 10, 100));
+        upgradeStyleGuide.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(upgradeStyleGuide, 50, 1000));
 
         upgrades = new GameObject[] { upgradeDvorak, upgradeStyleGuide };
     }
@@ -52,6 +39,6 @@ public class CodeMonkey : Building
 
         conditions = new Condition[] { upgradeDvorakCondition, upgradeStyleGuideCondition };
 
-        InvokeRepeating("ShowUpgrade", 0, 1);
+        InvokeRepeating(nameof(ShowUpgrade), 0, 1);
     }
 }

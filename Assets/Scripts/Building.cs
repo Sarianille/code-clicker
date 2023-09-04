@@ -1,20 +1,17 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public abstract class Building : MonoBehaviour
 {
     protected ulong LOCAdded;
     protected ulong LOCAddedDefault;
-    public ulong Amount = 0;
-    public ulong BuyCost;
+    protected ulong BuyCost;
     protected ulong BuyCostDefault;
     protected ulong SellCost;
     protected ulong SellCostDefault;
-    protected ulong AppearNextMinimum;
+    protected ulong Amount = 0;
+
     public float Multiplier = 1;
 
     protected int UpgradeAndConditionCounter = 0;
@@ -22,8 +19,6 @@ public abstract class Building : MonoBehaviour
     protected Condition[] conditions;
 
     public Clicker clicker;
-    [SerializeField]
-    protected GameObject building;
 
     [SerializeField]
     protected TMP_Text BuyCostText;
@@ -31,6 +26,13 @@ public abstract class Building : MonoBehaviour
     protected TMP_Text SellCostText;
     [SerializeField]
     protected TMP_Text AmountText;
+
+    public abstract void SetupUpgrades();
+    public abstract void SetupConditions();
+    public static ulong ToTwosComplement(ulong input) => ~input + 1;
+    public ulong GetAmount() => Amount;
+    public bool EnoughMoney(ulong cost) => clicker.currentLOCCount >= cost;
+    public ulong SendLOC() => (ulong)((Amount * LOCAdded) * Multiplier);
 
     public void Buy()
     {
@@ -40,9 +42,7 @@ public abstract class Building : MonoBehaviour
             clicker.ManageLOCServerRpc(ToTwosComplement(BuyCost), clicker.isServer);
 
             AdjustCosts((x, y) => (ulong)(x * y));
-
             Amount++;
-
             RefreshText();
         }
     }
@@ -56,7 +56,6 @@ public abstract class Building : MonoBehaviour
             Amount--;
 
             AdjustCosts((x, y) => (ulong)(x / y));
-
             RefreshText();
         }
     }
@@ -72,56 +71,29 @@ public abstract class Building : MonoBehaviour
         BuyCost = operation(BuyCost, 1.5);
     }
 
-    public void RefreshText()
+    private void RefreshText()
     {
         BuyCostText.text = "Buy: " + clicker.numberSuffixes.FormatNumber(BuyCost);
         SellCostText.text = "Sell: " + clicker.numberSuffixes.FormatNumber(SellCost);
         AmountText.text = Amount.ToString();
     }
 
-    public ulong SendLOC()
-    {
-        ulong LOC = (ulong)((Amount * LOCAdded) * Multiplier);
-
-        return LOC;
-    }
-
-    public void AppearNext()
-    {
-        if (clicker.overallLOCCount > AppearNextMinimum)
-        {
-            building.SetActive(true);
-            CancelInvoke("AppearNext");
-        }
-        else
-        {
-            building.SetActive(false);
-        }
-    }
-
-    public void AddUpgrade(Building building, GameObject upgrade, ulong amountAdded, ulong cost)
+    protected void AddUpgrade(GameObject upgrade, ulong amountAdded, ulong cost)
     {
         if (EnoughMoney(cost))
         {
-            building.LOCAdded += amountAdded;
+            LOCAdded += amountAdded;
             clicker.currentLOCCount -= cost;
             clicker.ManageLOCServerRpc(ToTwosComplement(cost), clicker.isServer);
             upgrade.SetActive(false);
         }
     }
 
-    public bool EnoughMoney(ulong cost)
-    {
-        return clicker.currentLOCCount >= cost;
-    }
-
-    public abstract void SetupUpgrades();
-    public abstract void SetupConditions();
-    public void ShowUpgrade()
+    protected void ShowUpgrade()
     {
         if (UpgradeAndConditionCounter >= upgrades.Length)
         {
-            CancelInvoke("ShowUpgrade");
+            CancelInvoke(nameof(ShowUpgrade));
         }
 
         if (conditions[UpgradeAndConditionCounter].IsMet())
@@ -129,6 +101,13 @@ public abstract class Building : MonoBehaviour
             upgrades[UpgradeAndConditionCounter].SetActive(true);
             UpgradeAndConditionCounter++;
         }
+    }
+
+    protected void SetupDefaults()
+    {
+        LOCAddedDefault = LOCAdded;
+        BuyCostDefault = BuyCost;
+        SellCostDefault = SellCost;
     }
 
     public void ResetToDefault()
@@ -146,28 +125,9 @@ public abstract class Building : MonoBehaviour
             upgrade.SetActive(false);
         }
 
-        if (!IsInvoking("ShowUpgrade"))
+        if (!IsInvoking(nameof(ShowUpgrade)))
         {
-            InvokeRepeating("ShowUpgrade", 0, 1);
+            InvokeRepeating(nameof(ShowUpgrade), 0, 1);
         }
-
-        if (!IsInvoking("AppearNext"))
-        {
-            InvokeRepeating("AppearNext", 0, 1);
-        }
-    }
-
-    public static ulong ToTwosComplement(ulong input) => ~input + 1;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

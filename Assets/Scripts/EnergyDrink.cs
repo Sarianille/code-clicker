@@ -64,7 +64,7 @@ public class EnergyDrink : MonoBehaviour
 
     private void UpdateOwnedBuildings()
     {
-        ownedBuildings = clicker.buildings.Where(building => building.Amount > 0).ToList();
+        ownedBuildings = clicker.buildings.Where(building => building.GetAmount() > 0).ToList();
     }
 
     private bool IsOffScreen()
@@ -144,7 +144,7 @@ public class EnergyDrink : MonoBehaviour
             clicker.notification.ShowMessage("Energy drink: Building special");
         }
 
-        ownedBuildings[currentBuilding].Multiplier += ((float)(10 * ownedBuildings[currentBuilding].Amount) / 100);
+        ownedBuildings[currentBuilding].Multiplier += ((float)(10 * ownedBuildings[currentBuilding].GetAmount()) / 100);
 
         --buildingSpecialBoostTime;
 

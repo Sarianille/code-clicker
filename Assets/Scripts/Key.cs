@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,35 +22,24 @@ public class Key : Building
     public Key()
     {
         LOCAdded = 1;
-        LOCAddedDefault = 1;
         BuyCost = 10;
-        BuyCostDefault = 10;
         SellCost = 5;
-        SellCostDefault = 5;
-        AppearNextMinimum = 100;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("AppearNext", 0, 1);
+        SetupDefaults();
         SetupUpgrades();
         SetupConditions();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public override void SetupUpgrades()
     {
-        upgrade10Fingers.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(this, upgrade10Fingers, 4, 10));
-        upgradeGoogleAnswers.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(this, upgradeGoogleAnswers, 5, 20));
-        upgradeCopilot.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(this, upgradeCopilot, 5, 20));
-        upgradeGPT.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(this, upgradeGPT, 10, 50));
-        upgradeRefactorCode.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(this, upgradeRefactorCode, 15, 100));
+        upgrade10Fingers.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(upgrade10Fingers, 4, 10));
+        upgradeGoogleAnswers.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(upgradeGoogleAnswers, 5, 20));
+        upgradeCopilot.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(upgradeCopilot, 5, 20));
+        upgradeGPT.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(upgradeGPT, 10, 50));
+        upgradeRefactorCode.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(upgradeRefactorCode, 15, 100));
 
         upgrades = new GameObject[] { upgrade10Fingers, upgradeGoogleAnswers, upgradeCopilot, upgradeGPT, upgradeRefactorCode };
     }
@@ -67,7 +54,7 @@ public class Key : Building
 
         conditions = new Condition[] { upgrade10FingersCondition, upgradeGoogleAnswersCondition, upgradeCopilotCondition, upgradeGPTCondition, upgradeRefactorCodeCondition };
 
-        InvokeRepeating("ShowUpgrade", 0, 1);
+        InvokeRepeating(nameof(ShowUpgrade), 0, 1);
     }
 
     public ulong GetLOCAdded()

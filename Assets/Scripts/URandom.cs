@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,31 +10,20 @@ public class URandom : Building
     public URandom()
     {
         LOCAdded = 10;
-        LOCAddedDefault = LOCAdded;
         BuyCost = 100;
-        BuyCostDefault = BuyCost;
         SellCost = 50;
-        SellCostDefault = SellCost;
-        AppearNextMinimum = 1000;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("AppearNext", 0, 1);
+        SetupDefaults();
         SetupUpgrades();
         SetupConditions();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public override void SetupUpgrades()
     {
-        upgradeHigherThroughput.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(this, upgradeHigherThroughput, 20, 200));
+        upgradeHigherThroughput.GetComponentInChildren<Button>().onClick.AddListener(() => AddUpgrade(upgradeHigherThroughput, 20, 200));
 
         upgrades = new GameObject[] { upgradeHigherThroughput };
     }
@@ -47,6 +34,6 @@ public class URandom : Building
 
         conditions = new Condition[] { upgradeHigherThroughputCondition };
 
-        InvokeRepeating("ShowUpgrade", 0, 1);
+        InvokeRepeating(nameof(ShowUpgrade), 0, 1);
     }
 }

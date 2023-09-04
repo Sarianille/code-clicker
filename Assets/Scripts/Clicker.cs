@@ -38,10 +38,14 @@ public class Clicker : NetworkBehaviour
 
     public bool isServer;
 
+    private ulong[] appearNextMinimum = { 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000 };
+    private int counter = 0;
+
     // Start is called before the first frame update
     void Start()
     {
         buildings = new Building[] { key, urandom, codeMonkey, giftedChild, MFFStudent, teamMember, contractorTeam, company, ai };
+        InvokeRepeating("ManageBuildingVisibility", 0, 0.5f);
     }
 
     // Update is called once per frame
@@ -89,7 +93,7 @@ public class Clicker : NetworkBehaviour
 
     private bool BuildingsOwned()
     {
-        return buildings.Any(building => building.Amount > 0);
+        return buildings.Any(building => building.GetAmount() > 0);
     }
 
     private void AddFromBuildings()
@@ -136,6 +140,20 @@ public class Clicker : NetworkBehaviour
             {
                 building.ResetToDefault();
             }
+        }
+    }
+
+    private void ManageBuildingVisibility()
+    {
+        if (counter >= appearNextMinimum.Length)
+        {
+            CancelInvoke("ManageBuildingVisibility");
+        }
+
+        if (overallLOCCount > appearNextMinimum[counter])
+        {
+            buildings[counter + 1].gameObject.SetActive(true);
+            counter++;
         }
     }
 

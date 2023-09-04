@@ -1,76 +1,76 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Achievements : MonoBehaviour
 {
     public List<Achievement> unachievedAchievements;
-    public List<Achievement> achievedAchievements;
+    private List<string> achievementNames;
     public Clicker clicker;
-    private List<string> buildingAchievementNames;
-    private int counter = 0;
 
-    // Start is called before the first frame update
+    private int counter = 0;
+    private ulong[] clickValues = { 1, 100, 10000, 100000 };
+    private ulong[] buildingValues = { 1, 5, 25, 50 };
+
     void Start()
     {
         SetupAchievements();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        UpdateAchievements();
+        InvokeRepeating(nameof(UpdateAchievements), 0, 1);
     }
 
     private void SetupAchievements()
     {
-        AddBuildingNames();
+        unachievedAchievements = new List<Achievement>();
 
-        unachievedAchievements = new List<Achievement>
-        {
-            new Achievement(this.transform.Find("Achievements Scroll/Viewport/Content/Click1").gameObject, (object o) => clicker.clicks >= 1),
-            new Achievement(this.transform.Find("Achievements Scroll/Viewport/Content/Click100").gameObject, (object o) => clicker.clicks >= 100),
-            new Achievement(this.transform.Find("Achievements Scroll/Viewport/Content/Click10000").gameObject, (object o) => clicker.clicks >= 10000),
-            new Achievement(this.transform.Find("Achievements Scroll/Viewport/Content/Click100000").gameObject, (object o) => clicker.clicks >= 100000)
-        };
-
+        AddAchievementNames();
+        AddClickingAchievements();
         AddBuildingAchievements();
-
-        achievedAchievements = new List<Achievement>();
     }
 
-    private void AddBuildingNames()
+    private void AddAchievementNames()
     {
-        buildingAchievementNames = new List<string>
+        achievementNames = new List<string>
         {
-            "Key1", "Key5", "Key25", "Key50",
-            "URandom1", "URandom5", "URandom25", "URandom50",
-            "CodeMonkey1", "CodeMonkey5", "CodeMonkey25", "CodeMonkey50",
-            "GiftedChild1", "GiftedChild5", "GiftedChild25", "GiftedChild50",
-            "MFFStudent1", "MFFStudent5", "MFFStudent25", "MFFStudent50",
-            "TeamMember1", "TeamMember5", "TeamMember25", "TeamMember50",
-            "ContractorTeam1", "ContractorTeam5", "ContractorTeam25", "ContractorTeam50",
-            "Company1", "Company5", "Company25", "Company50",
-            "AI1", "AI5", "AI25", "AI50"
+            "Click",
+            "Key",
+            "URandom",
+            "CodeMonkey",
+            "GiftedChild",
+            "MFFStudent",
+            "TeamMember",
+            "ContractorTeam",
+            "Company",
+            "AI"
         };
+    }
+
+    private void AddClickingAchievements()
+    {
+        foreach (var clickValue in clickValues)
+        {
+            unachievedAchievements.Add(new Achievement(this.transform.Find($"Achievements Scroll/Viewport/Content/" + achievementNames[counter] + clickValue.ToString()).gameObject, (object o) => clicker.clicks >= clickValue));
+        }
+
+        counter++;
     }
 
     private void AddBuildingAchievements()
     {
         foreach (var building in clicker.buildings)
         {
-            unachievedAchievements.Add(new Achievement(this.transform.Find("Achievements Scroll/Viewport/Content/" + buildingAchievementNames[counter]).gameObject, (object o) => building.Amount >= 1));
-            unachievedAchievements.Add(new Achievement(this.transform.Find("Achievements Scroll/Viewport/Content/" + buildingAchievementNames[counter + 1]).gameObject, (object o) => building.Amount >= 5));
-            unachievedAchievements.Add(new Achievement(this.transform.Find("Achievements Scroll/Viewport/Content/" + buildingAchievementNames[counter + 2]).gameObject, (object o) => building.Amount >= 25));
-            unachievedAchievements.Add(new Achievement(this.transform.Find("Achievements Scroll/Viewport/Content/" + buildingAchievementNames[counter + 3]).gameObject, (object o) => building.Amount >= 50));
+            foreach (var buildingValue in buildingValues)
+            {
+                unachievedAchievements.Add(new Achievement(this.transform.Find("Achievements Scroll/Viewport/Content/" + achievementNames[counter] + buildingValue.ToString()).gameObject, (object o) => building.GetAmount() >= buildingValue));
+            }
 
-            counter += 4;
+            counter++;
         }
     }
 
     private void UpdateAchievements()
     {
+        List<Achievement> achievedAchievements = null;
+
         if (unachievedAchievements.Count > 0)
         {
             foreach (var achievement in unachievedAchievements)
@@ -78,17 +78,25 @@ public class Achievements : MonoBehaviour
                 if (achievement.IsAchieved())
                 {
                     clicker.notification.ShowMessage("Achievement unlocked.");
+
+                    if (achievedAchievements is null)
+                    {
+                        achievedAchievements = new List<Achievement>();
+                    }
+
                     achievedAchievements.Add(achievement);
                 }
             }
         }
 
-        if (achievedAchievements.Count > 0)
+        if (achievedAchievements is null)
         {
-            foreach (var achievement in achievedAchievements)
-            {
-                unachievedAchievements.Remove(achievement);
-            }
+            return;
+        }
+
+        foreach (var achievement in achievedAchievements)
+        {
+            unachievedAchievements.Remove(achievement);
         }
     }
 }
