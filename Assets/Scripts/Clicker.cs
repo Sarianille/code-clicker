@@ -38,39 +38,39 @@ public class Clicker : NetworkBehaviour
     private ulong[] appearNextMinimum = { 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000 };
     private int counter = 0;
 
-    // Start is called before the first frame update
     void Start()
     {
         buildings = new Building[] { key, urandom, codeMonkey, giftedChild, MFFStudent, teamMember, contractorTeam, company, ai };
-        InvokeRepeating("ManageBuildingVisibility", 0, 0.5f);
+        InvokeRepeating(nameof(ManageBuildingVisibility), 0, 0.5f);
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (BuildingsOwned())
         {
-            if (!IsInvoking("AddFromBuildings"))
+            if (!IsInvoking(nameof(AddFromBuildings)))
             {
-                InvokeRepeating("AddFromBuildings", 0, 1);
+                InvokeRepeating(nameof(AddFromBuildings), 0, 1);
             }
         }
         else
         {
-            CancelInvoke("AddFromBuildings");
+            CancelInvoke(nameof(AddFromBuildings));
         }
 
         LOCCount.text = numberSuffixes.FormatNumber(currentLOCCount);
     }
 
+    private bool BuildingsOwned() => buildings.Any(building => building.GetAmount() > 0);
+
     public void AddFromClick()
     {
-        IncrementLOC(key.GetLOCAdded() * ClickMultiplier);
+        AddToLOC(key.GetLOCAdded() * ClickMultiplier);
         SendLOCToServerServerRpc(key.GetLOCAdded() * ClickMultiplier, isServer);
         clicks++;
     }
 
-    public void IncrementLOC(ulong LOCAdded)
+    private void AddToLOC(ulong LOCAdded)
     {
         try
         {
@@ -88,17 +88,13 @@ public class Clicker : NetworkBehaviour
         }
     }
 
-    private bool BuildingsOwned()
-    {
-        return buildings.Any(building => building.GetAmount() > 0);
-    }
-
     private void AddFromBuildings()
     {
         CollectLOCFromBuildings();
+
         ulong LOCAdded = LOCPerSecond * ProductionMultiplier;
 
-        IncrementLOC(LOCAdded);
+        AddToLOC(LOCAdded);
         SendLOCToServerServerRpc(LOCAdded, isServer);
         ChangeLOCFromOthersClientRpc(LOCFromOthers);
 
@@ -125,6 +121,20 @@ public class Clicker : NetworkBehaviour
         }
     }
 
+    private void ManageBuildingVisibility()
+    {
+        if (counter >= appearNextMinimum.Length)
+        {
+            CancelInvoke(nameof(ManageBuildingVisibility));
+        }
+
+        if (overallLOCCount > appearNextMinimum[counter])
+        {
+            buildings[counter + 1].gameObject.SetActive(true);
+            counter++;
+        }
+    }
+
     public void Restart()
     {
         overallLOCCount = 0;
@@ -136,21 +146,12 @@ public class Clicker : NetworkBehaviour
             if (building.gameObject.activeSelf)
             {
                 building.ResetToDefault();
+
+                if (building is not Key)
+                {
+                    building.gameObject.SetActive(false);
+                }
             }
-        }
-    }
-
-    private void ManageBuildingVisibility()
-    {
-        if (counter >= appearNextMinimum.Length)
-        {
-            CancelInvoke("ManageBuildingVisibility");
-        }
-
-        if (overallLOCCount > appearNextMinimum[counter])
-        {
-            buildings[counter + 1].gameObject.SetActive(true);
-            counter++;
         }
     }
 
@@ -159,7 +160,7 @@ public class Clicker : NetworkBehaviour
     {
         if (!isServer)
         {
-            IncrementLOC(LOCAdded);
+            AddToLOC(LOCAdded);
             LOCFromOthers += LOCAdded;
         }
     }
