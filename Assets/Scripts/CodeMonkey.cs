@@ -15,8 +15,11 @@ public class CodeMonkey : Building
     public CodeMonkey()
     {
         LOCAdded = 100;
+        LOCAddedDefault = LOCAdded;
         BuyCost = 500;
+        BuyCostDefault = BuyCost;
         SellCost = 250;
+        SellCostDefault = SellCost;
         AppearNextMinimum = 10000;
     }
 

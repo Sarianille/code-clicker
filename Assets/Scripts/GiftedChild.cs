@@ -21,8 +21,11 @@ public class GiftedChild : Building
     public GiftedChild()
     {
         LOCAdded = 500;
+        LOCAddedDefault = LOCAdded;
         BuyCost = 2000;
+        BuyCostDefault = BuyCost;
         SellCost = 1000;
+        SellCostDefault = SellCost;
         AppearNextMinimum = 100000;
     }
 

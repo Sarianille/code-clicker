@@ -15,8 +15,11 @@ public class MFFStudent : Building
     public MFFStudent()
     {
         LOCAdded = 1000;
+        LOCAddedDefault = LOCAdded;
         BuyCost = 10000;
+        BuyCostDefault = BuyCost;
         SellCost = 5000;
+        SellCostDefault = SellCost;
         AppearNextMinimum = 1000000;
     }
 

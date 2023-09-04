@@ -12,8 +12,11 @@ public class AI : Building
     public AI()
     {
         LOCAdded = 100000;
+        LOCAddedDefault = LOCAdded;
         BuyCost = 150000;
+        BuyCostDefault = BuyCost;
         SellCost = 75000;
+        SellCostDefault = SellCost;
         AppearNextMinimum = 10000000000;
     }
 

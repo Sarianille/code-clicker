@@ -12,8 +12,11 @@ public class URandom : Building
     public URandom()
     {
         LOCAdded = 10;
+        LOCAddedDefault = LOCAdded;
         BuyCost = 100;
+        BuyCostDefault = BuyCost;
         SellCost = 50;
+        SellCostDefault = SellCost;
         AppearNextMinimum = 1000;
     }
 

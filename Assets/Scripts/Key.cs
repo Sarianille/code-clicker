@@ -24,8 +24,11 @@ public class Key : Building
     public Key()
     {
         LOCAdded = 1;
+        LOCAddedDefault = 1;
         BuyCost = 10;
+        BuyCostDefault = 10;
         SellCost = 5;
+        SellCostDefault = 5;
         AppearNextMinimum = 100;
     }
 

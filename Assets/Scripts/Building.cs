@@ -8,9 +8,12 @@ using UnityEngine.UI;
 public abstract class Building : MonoBehaviour
 {
     protected ulong LOCAdded;
+    protected ulong LOCAddedDefault;
     public ulong Amount = 0;
     public ulong BuyCost;
+    protected ulong BuyCostDefault;
     protected ulong SellCost;
+    protected ulong SellCostDefault;
     protected ulong AppearNextMinimum;
     public float Multiplier = 1;
 
@@ -34,6 +37,7 @@ public abstract class Building : MonoBehaviour
         if (EnoughMoney(BuyCost))
         {
             clicker.currentLOCCount -= BuyCost;
+            clicker.ManageLOCServerRpc(ToTwosComplement(BuyCost), clicker.isServer);
 
             AdjustCosts((x, y) => (ulong)(x * y));
 
@@ -48,6 +52,7 @@ public abstract class Building : MonoBehaviour
         if (Amount > 0)
         {
             clicker.currentLOCCount += SellCost;
+            clicker.ManageLOCServerRpc(SellCost, clicker.isServer);
             Amount--;
 
             AdjustCosts((x, y) => (ulong)(x / y));
@@ -88,6 +93,10 @@ public abstract class Building : MonoBehaviour
             building.SetActive(true);
             CancelInvoke("AppearNext");
         }
+        else
+        {
+            building.SetActive(false);
+        }
     }
 
     public void AddUpgrade(Building building, GameObject upgrade, ulong amountAdded, ulong cost)
@@ -96,6 +105,7 @@ public abstract class Building : MonoBehaviour
         {
             building.LOCAdded += amountAdded;
             clicker.currentLOCCount -= cost;
+            clicker.ManageLOCServerRpc(ToTwosComplement(cost), clicker.isServer);
             upgrade.SetActive(false);
         }
     }
@@ -109,17 +119,45 @@ public abstract class Building : MonoBehaviour
     public abstract void SetupConditions();
     public void ShowUpgrade()
     {
+        if (UpgradeAndConditionCounter >= upgrades.Length)
+        {
+            CancelInvoke("ShowUpgrade");
+        }
+
         if (conditions[UpgradeAndConditionCounter].IsMet())
         {
             upgrades[UpgradeAndConditionCounter].SetActive(true);
             UpgradeAndConditionCounter++;
         }
+    }
 
-        if (UpgradeAndConditionCounter == upgrades.Length)
+    public void ResetToDefault()
+    {
+        LOCAdded = LOCAddedDefault;
+        BuyCost = BuyCostDefault;
+        SellCost = SellCostDefault;
+        Amount = 0;
+        UpgradeAndConditionCounter = 0;
+
+        RefreshText();
+
+        foreach (var upgrade in upgrades)
         {
-            CancelInvoke("ShowUpgrade");
+            upgrade.SetActive(false);
+        }
+
+        if (!IsInvoking("ShowUpgrade"))
+        {
+            InvokeRepeating("ShowUpgrade", 0, 1);
+        }
+
+        if (!IsInvoking("AppearNext"))
+        {
+            InvokeRepeating("AppearNext", 0, 1);
         }
     }
+
+    public static ulong ToTwosComplement(ulong input) => ~input + 1;
 
     // Start is called before the first frame update
     void Start()

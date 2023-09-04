@@ -18,8 +18,11 @@ public class TeamMember : Building
     public TeamMember()
     {
         LOCAdded = 5000;
+        LOCAddedDefault = LOCAdded;
         BuyCost = 15000;
+        BuyCostDefault = BuyCost;
         SellCost = 7500;
+        SellCostDefault = SellCost;
         AppearNextMinimum = 10000000;
     }
 

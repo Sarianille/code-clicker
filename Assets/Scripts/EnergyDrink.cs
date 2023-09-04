@@ -112,7 +112,7 @@ public class EnergyDrink : MonoBehaviour
 
     private void Add15Percent()
     {
-        clicker.IncrementLOC((ulong)(clicker.currentLOCCount * 0.15));
+        clicker.ManageLOCServerRpc((ulong)(clicker.currentLOCCount * 0.15), false);
         clicker.notification.ShowMessage("Energy drink: +15% of your LOC");
     }
 

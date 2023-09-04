@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using Unity.Netcode;
+using UnityEditor;
 using UnityEngine;
 
 public class Clicker : NetworkBehaviour
@@ -15,6 +16,8 @@ public class Clicker : NetworkBehaviour
 
     public ulong LOCPerSecond = 0;
     public TMP_Text LOCPErSecondText;
+    private ulong LOCFromOthers = 0;
+    public TMP_Text LOCFromOthersText;
 
     public NumberSuffixes numberSuffixes;
     public ulong ClickMultiplier = 1;
@@ -32,6 +35,8 @@ public class Clicker : NetworkBehaviour
     public Building[] buildings;
 
     public Notification notification;
+
+    public bool isServer;
 
     // Start is called before the first frame update
     void Start()
@@ -54,12 +59,13 @@ public class Clicker : NetworkBehaviour
             CancelInvoke("AddFromBuildings");
         }
 
-        ChangeTextOfClientClientRpc();
+        LOCCount.text = numberSuffixes.FormatNumber(currentLOCCount);
     }
 
     public void AddFromClick()
     {
         IncrementLOC(key.GetLOCAdded() * ClickMultiplier);
+        SendLOCToServerServerRpc(key.GetLOCAdded() * ClickMultiplier, isServer);
         clicks++;
     }
 
@@ -71,6 +77,8 @@ public class Clicker : NetworkBehaviour
             {
                 overallLOCCount += LOCAdded;
                 currentLOCCount += LOCAdded;
+
+                ChangeTextOfClientClientRpc(overallLOCCount, currentLOCCount);
             }
         }
         catch (OverflowException ex)
@@ -88,12 +96,24 @@ public class Clicker : NetworkBehaviour
     {
         CollectLOCFromBuildings();
         ulong LOCAdded = LOCPerSecond * ProductionMultiplier;
+
+        IncrementLOC(LOCAdded);
+        SendLOCToServerServerRpc(LOCAdded, isServer);
+        ChangeLOCFromOthersClientRpc(LOCFromOthers);
+
         LOCPErSecondText.text = "+" + numberSuffixes.FormatNumber(LOCAdded);
         LOCPErSecondText.CrossFadeAlpha(1, 0, false);
-        IncrementLOC(LOCAdded);
-        SendLOCToServerServerRpc(LOCAdded);
-        LOCPerSecond = 0;
         LOCPErSecondText.CrossFadeAlpha(0, 0.8f, false);
+
+        if (LOCFromOthers != 0)
+        {
+            LOCFromOthersText.text = "Teammates: +" + numberSuffixes.FormatNumber(LOCFromOthers);
+            LOCFromOthersText.CrossFadeAlpha(1, 0, false);
+            LOCFromOthersText.CrossFadeAlpha(0, 0.8f, false);
+        }
+
+        LOCPerSecond = 0;
+        LOCFromOthers = 0;
     }
 
     private void CollectLOCFromBuildings()
@@ -104,15 +124,51 @@ public class Clicker : NetworkBehaviour
         }
     }
 
-    [ServerRpc]
-    private void SendLOCToServerServerRpc(ulong LOCAdded)
+    public void Restart()
     {
-        IncrementLOC(LOCAdded);
+        overallLOCCount = 0;
+        currentLOCCount = 0;
+        clicks = 0;
+
+        foreach (var building in buildings)
+        {
+            if (building.gameObject.activeSelf)
+            {
+                building.ResetToDefault();
+            }
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SendLOCToServerServerRpc(ulong LOCAdded, bool isServer)
+    {
+        if (!isServer)
+        {
+            IncrementLOC(LOCAdded);
+            LOCFromOthers += LOCAdded;
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void ManageLOCServerRpc(ulong LOC, bool isServer)
+    {
+        if (!isServer)
+        {
+            currentLOCCount += LOC;
+            ChangeTextOfClientClientRpc(overallLOCCount, currentLOCCount);
+        }
     }
 
     [ClientRpc]
-    private void ChangeTextOfClientClientRpc()
+    private void ChangeTextOfClientClientRpc(ulong overallLOC, ulong currentLOC)
     {
-        LOCCount.text = numberSuffixes.FormatNumber(currentLOCCount);
+        overallLOCCount = overallLOC;
+        currentLOCCount = currentLOC;
+    }
+
+    [ClientRpc]
+    private void ChangeLOCFromOthersClientRpc(ulong currentLOCFromOthers)
+    {
+        LOCFromOthers = currentLOCFromOthers;
     }
 }

@@ -30,8 +30,11 @@ public class Company : Building
     public Company()
     {
         LOCAdded = 50000;
+        LOCAddedDefault = LOCAdded;
         BuyCost = 100000;
+        BuyCostDefault = BuyCost;
         SellCost = 50000;
+        SellCostDefault = SellCost;
         AppearNextMinimum = 1000000000;
     }
 

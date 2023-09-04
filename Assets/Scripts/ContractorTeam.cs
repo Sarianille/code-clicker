@@ -18,8 +18,11 @@ public class ContractorTeam : Building
     public ContractorTeam()
     {
         LOCAdded = 10000;
+        LOCAddedDefault = LOCAdded;
         BuyCost = 50000;
+        BuyCostDefault = BuyCost;
         SellCost = 25000;
+        SellCostDefault = SellCost;
         AppearNextMinimum = 100000000;
     }
 
