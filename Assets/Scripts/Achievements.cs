@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Achievements : MonoBehaviour
 {
-    public List<Achievement> unachievedAchievements;
+    private List<Achievement> unachievedAchievements;
     private List<string> achievementNames;
     public Clicker clicker;
 
