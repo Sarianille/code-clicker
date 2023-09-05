@@ -18,28 +18,29 @@ public class Relay : MonoBehaviour
         Instance = this;
         await UnityServices.InitializeAsync();
 
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
         if (ParrelSync.ClonesManager.IsClone())
         {
             // When using a ParrelSync clone, switch to a different authentication profile to force the clone
-            // to sign in as a different anonymous user account.
+            // to sign in as a different anonymous user account
             string customArgument = ParrelSync.ClonesManager.GetArgument();
             AuthenticationService.Instance.SwitchProfile($"Clone_{customArgument}_Profile");
         }
-#endif
+        #endif
 
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
     }
 
+    /// <summary>
+    /// Creates a new relay server and starts the game as the host.
+    /// </summary>
+    /// <param name="numberOfPlayers">How many players can join. Does not include the host.</param>
+    /// <returns>Join code for the current relay.</returns>
     public async Task<string> CreateRelay(int numberOfPlayers)
     {
         try
         {
-            if (isRunning)
-            {
-                NetworkManager.Singleton.Shutdown();
-                clicker.Restart();
-            }
+            NewRelay();
 
             Allocation allocation = await RelayService.Instance.CreateAllocationAsync(numberOfPlayers);
 
@@ -63,15 +64,15 @@ public class Relay : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Joins an existing relay server and starts the game as a client.
+    /// </summary>
+    /// <param name="joinCode">Join code for the relay.</param>
     public async void JoinRelay(string joinCode)
     {
         try
         {
-            if (isRunning)
-            {
-                NetworkManager.Singleton.Shutdown();
-                clicker.Restart();
-            }
+            NewRelay();
 
             JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
 
@@ -85,6 +86,18 @@ public class Relay : MonoBehaviour
         catch (RelayServiceException ex) 
         {
             Debug.LogError($"RelayServiceException: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// If a relay is already running (singleplayer or previous multiplayer), shuts it down and restarts game values.
+    /// </summary>
+    private void NewRelay()
+    {
+        if (isRunning)
+        {
+            NetworkManager.Singleton.Shutdown();
+            clicker.Restart();
         }
     }
 }

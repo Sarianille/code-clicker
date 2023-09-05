@@ -41,11 +41,13 @@ public class Clicker : NetworkBehaviour
     void Start()
     {
         buildings = new Building[] { key, urandom, codeMonkey, giftedChild, MFFStudent, teamMember, contractorTeam, company, ai };
+
         InvokeRepeating(nameof(ManageBuildingVisibility), 0, 0.5f);
     }
 
     void Update()
     {
+        // Ensures that the LOC from buildings is only calculated when the player owns buildings
         if (BuildingsOwned())
         {
             if (!IsInvoking(nameof(AddFromBuildings)))
@@ -61,15 +63,28 @@ public class Clicker : NetworkBehaviour
         LOCCount.text = numberSuffixes.FormatNumber(currentLOCCount);
     }
 
+    /// <summary>
+    /// Checks if the player owns any buildings.
+    /// </summary>
+    /// <returns>Whether the player owns any buildings.</returns>
     private bool BuildingsOwned() => buildings.Any(building => building.GetAmount() > 0);
 
+    /// <summary>
+    /// Upon clicking, adds the correct LOC amount.
+    /// </summary>
     public void AddFromClick()
     {
+        // Synchronize how many LOC clicks add with the Key building
         AddToLOC(key.GetLOCAdded() * ClickMultiplier);
-        SendLOCToServerServerRpc(key.GetLOCAdded() * ClickMultiplier, isServer);
+        SendLOCToServerServerRpc(key.GetLOCAdded() * ClickMultiplier, isServer, isFromClick: true);
         clicks++;
     }
 
+    /// <summary>
+    /// Add the amount of LOC.
+    /// If the amount of LOC exceeds the maximum value of ulong, the session is won.
+    /// </summary>
+    /// <param name="LOCAdded"></param>
     private void AddToLOC(ulong LOCAdded)
     {
         try
@@ -82,12 +97,16 @@ public class Clicker : NetworkBehaviour
                 ChangeTextOfClientClientRpc(overallLOCCount, currentLOCCount);
             }
         }
-        catch (OverflowException ex)
+        catch (OverflowException)
         {
             GameWon();
         }
     }
 
+    /// <summary>
+    /// Adds the LOC gained from buildings.
+    /// Showcases how many LOC were gained this way.
+    /// </summary>
     private void AddFromBuildings()
     {
         CollectLOCFromBuildings();
@@ -95,13 +114,16 @@ public class Clicker : NetworkBehaviour
         ulong LOCAdded = LOCPerSecond * ProductionMultiplier;
 
         AddToLOC(LOCAdded);
-        SendLOCToServerServerRpc(LOCAdded, isServer);
+        SendLOCToServerServerRpc(LOCAdded, isServer, isFromClick: false);
         ChangeLOCFromOthersClientRpc(LOCFromOthers);
+        
+        LOCFromOthers -= LOCAdded;
 
         LOCPerSecondText.text = "+" + numberSuffixes.FormatNumber(LOCAdded);
         LOCPerSecondText.CrossFadeAlpha(1, 0, false);
         LOCPerSecondText.CrossFadeAlpha(0, 0.8f, false);
 
+        // In multiplayer, show how much LOC was added by teammates
         if (LOCFromOthers != 0)
         {
             LOCFromOthersText.text = "Teammates: +" + numberSuffixes.FormatNumber(LOCFromOthers);
@@ -113,6 +135,9 @@ public class Clicker : NetworkBehaviour
         LOCFromOthers = 0;
     }
 
+    /// <summary>
+    /// Adds up the LOC gained from each buildings into one number.
+    /// </summary>
     private void CollectLOCFromBuildings()
     {
         foreach (var building in buildings)
@@ -121,6 +146,10 @@ public class Clicker : NetworkBehaviour
         }
     }
 
+    /// <summary>
+    /// Shows the next building when the LOC count is high enough.
+    /// Stops invoking when all buildings are shown.
+    /// </summary>
     private void ManageBuildingVisibility()
     {
         if (counter >= appearNextMinimum.Length)
@@ -135,6 +164,9 @@ public class Clicker : NetworkBehaviour
         }
     }
 
+    /// <summary>
+    /// Restart the game. Reset all values to default, apart from achievements.
+    /// </summary>
     public void Restart()
     {
         overallLOCCount = 0;
@@ -143,10 +175,12 @@ public class Clicker : NetworkBehaviour
 
         foreach (var building in buildings)
         {
+            // Inactive buildings still have dafault values
             if (building.gameObject.activeSelf)
             {
                 building.ResetToDefault();
 
+                // The Key building is always active
                 if (building is not Key)
                 {
                     building.gameObject.SetActive(false);
@@ -155,25 +189,46 @@ public class Clicker : NetworkBehaviour
         }
     }
 
+    /// <summary>
+    /// If the player has too many LOC, they win and the game restarts in case the player wants to play again.
+    /// </summary>
     private void GameWon()
     {
         notification.ShowMessage("Too many LOC! You won! Restarting...");
+
         Restart();
     }
 
+
+    /// <summary>
+    /// Updates the host's LOC count based on the player's addition.
+    /// </summary>
+    /// <param name="LOCAdded">How many LOC the player added.</param>
+    /// <param name="isServer">Whether the player is the host.</param>
     [ServerRpc(RequireOwnership = false)]
-    private void SendLOCToServerServerRpc(ulong LOCAdded, bool isServer)
+    private void SendLOCToServerServerRpc(ulong LOCAdded, bool isServer, bool isFromClick)
     {
+        // The host already has the correct value
         if (!isServer)
         {
             AddToLOC(LOCAdded);
+        }
+
+        if (!isFromClick)
+        {
             LOCFromOthers += LOCAdded;
         }
     }
 
+    /// <summary>
+    /// Manages current LOC count without it affecting the overall count (ex. when buying buildings).
+    /// </summary>
+    /// <param name="LOC">LOC added or subtracted.</param>
+    /// <param name="isServer">Whether the player is the host.</param>
     [ServerRpc(RequireOwnership = false)]
     public void ManageLOCServerRpc(ulong LOC, bool isServer)
     {
+        // The host already has the correct value
         if (!isServer)
         {
             currentLOCCount += LOC;
@@ -181,6 +236,11 @@ public class Clicker : NetworkBehaviour
         }
     }
 
+    /// <summary>
+    /// Sends the correct LOC counts from the host to the other players for synchronization.
+    /// </summary>
+    /// <param name="overallLOC">New overallLOCCount.</param>
+    /// <param name="currentLOC">New currentLOCCount.</param>
     [ClientRpc]
     private void ChangeTextOfClientClientRpc(ulong overallLOC, ulong currentLOC)
     {
@@ -188,6 +248,10 @@ public class Clicker : NetworkBehaviour
         currentLOCCount = currentLOC;
     }
 
+    /// <summary>
+    /// Updates the LOC gained from teammates.
+    /// </summary>
+    /// <param name="currentLOCFromOthers">LOC gained from teammates.</param>
     [ClientRpc]
     private void ChangeLOCFromOthersClientRpc(ulong currentLOCFromOthers)
     {

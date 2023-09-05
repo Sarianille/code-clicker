@@ -27,6 +27,9 @@ public class Achievements : MonoBehaviour
         AddBuildingAchievements();
     }
 
+    /// <summary>
+    /// Adds the core of the names. The rest of the name is the value of the requirement and do not have to be added.
+    /// </summary>
     private void AddAchievementNames()
     {
         achievementNames = new List<string>
@@ -44,6 +47,9 @@ public class Achievements : MonoBehaviour
         };
     }
 
+    /// <summary>
+    /// Finds the clicking achievement gameobject and adds it to the list of unachieved achievements with the correct requirement predicate.
+    /// </summary>
     private void AddClickingAchievements()
     {
         foreach (var clickValue in clickValues)
@@ -54,6 +60,9 @@ public class Achievements : MonoBehaviour
         counter++;
     }
 
+    /// <summary>
+    /// Finds the building achievement gameobject and adds it to the list of unachieved achievements with the correct requirement predicate.
+    /// </summary>
     private void AddBuildingAchievements()
     {
         foreach (var building in clicker.buildings)
@@ -67,6 +76,9 @@ public class Achievements : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Check if any achievements have been achieved. If so, remove them from the list of unachieved achievements.
+    /// </summary>
     private void UpdateAchievements()
     {
         List<Achievement> achievedAchievements = null;
@@ -114,6 +126,10 @@ public class Achievement
         achieved = false;
     }
 
+    /// <summary>
+    ///  If the achievement has not been achieved and the requirement is met, show the achievement and set it to achieved.
+    /// </summary>
+    /// <returns>Whether the achievmment is achieved.</returns>
     public bool IsAchieved()
     {
         if (!achieved && RequirementMet())
@@ -125,6 +141,10 @@ public class Achievement
         return achieved;
     }
 
+    /// <summary>
+    /// Invoke the requirement predicate.
+    /// </summary>
+    /// <returns>Whether the requirement is fullfilled.</returns>
     public bool RequirementMet()
     {
         return requirement.Invoke(null);

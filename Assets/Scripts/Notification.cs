@@ -18,8 +18,15 @@ public class Notification : MonoBehaviour
         panel.transform.localPosition = Vector3.MoveTowards(panel.transform.localPosition, position, step);
     }
 
+    /// <summary>
+    /// Moves the message off screen.
+    /// </summary>
     private void HideMessage() => position = offScreenPosition;
 
+    /// <summary>
+    /// Shows message for 5 seconds. If a new message is shown, resets the 5 seconds timer.
+    /// </summary>
+    /// <param name="newMessage">Message to be shown.</param>
     public void ShowMessage(string newMessage)
     {
         message.text = newMessage;

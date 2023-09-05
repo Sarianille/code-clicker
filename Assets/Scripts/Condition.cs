@@ -13,6 +13,10 @@ public class Condition
         this.DependantOn = DependantOn;
     }
 
+    /// <summary>
+    /// Checks whether all of the necessary conditions are met.
+    /// </summary>
+    /// <returns>Whether the condition is met,</returns>
     public bool IsMet()
     {
         if (DependantOn != null)

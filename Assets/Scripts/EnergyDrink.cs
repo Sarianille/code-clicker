@@ -30,10 +30,23 @@ public class EnergyDrink : MonoBehaviour
         Invoke(nameof(DropEnergyDrink), appearNext);
     }
 
+    /// <summary>
+    /// Updates the list of owned buildings.
+    /// </summary>
     private void UpdateOwnedBuildings() => ownedBuildings = clicker.buildings.Where(building => building.GetAmount() > 0).ToList();
+    /// <summary>
+    /// Changes the multiplier of the building with the boost. Adjusts according to the amount of buildings.
+    /// </summary>
     private void UpdateBuildingMultiplier() => ownedBuildings[currentBuilding].Multiplier = 1 + ((float)(10 * ownedBuildings[currentBuilding].GetAmount()) / 100);
+    /// <summary>
+    /// Moves the energy drink off screen.
+    /// </summary>
     private void HideEnergyDrink() => energyDrink.transform.localPosition = offSreenPosition;
 
+    /// <summary>
+    /// As soon as the energy drink appears, calculates the next time it will appear
+    /// If not clicked, it will disappear after 20 seconds.
+    /// </summary>
     private void DropEnergyDrink()
     {
         var appearNext = Random.Range(dropFrequencyMin, dropFrequencyMax);
@@ -42,6 +55,9 @@ public class EnergyDrink : MonoBehaviour
         ChooseBoost();
     }
 
+    /// <summary>
+    /// Randomizes the boost.
+    /// </summary>
     private void ChooseBoost()
     {
         currentBoost = Random.Range(0, 4);
@@ -49,6 +65,9 @@ public class EnergyDrink : MonoBehaviour
         ShowEnergyDrink();
     }
 
+    /// <summary>
+    /// Randomizes the position of the energy drink on screen.
+    /// </summary>
     private void ShowEnergyDrink()
     {
         float xPosition = Random.Range(0 - xRange, 0 + xRange);
@@ -59,6 +78,9 @@ public class EnergyDrink : MonoBehaviour
         energyDrink.transform.localPosition = randomPosition;
     }
 
+    /// <summary>
+    /// Upon clicking on the energy drink, hides it and starts the boost.
+    /// </summary>
     public void StartBoost()
     {
         CancelInvoke(nameof(HideEnergyDrink));
@@ -81,12 +103,18 @@ public class EnergyDrink : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Adds 15% of the current LOC count.
+    /// </summary>
     private void Add15Percent()
     {
         clicker.ManageLOCServerRpc((ulong)(clicker.currentLOCCount * 0.15), false);
         clicker.notification.ShowMessage("Energy drink: +15% of your LOC");
     }
 
+    /// <summary>
+    /// Increases the production of all buildings by 10x for 42 seconds.
+    /// </summary>
     private void IncreasedProduction()
     {
         clicker.ProductionMultiplier = 10;
@@ -95,6 +123,9 @@ public class EnergyDrink : MonoBehaviour
         Invoke(nameof(StopBoost), 42);
     }
 
+    /// <summary>
+    /// Increases the production of a random building based on the amount of that building type for 30 seconds.
+    /// </summary>
     private void BuildingSpecial()
     {
         UpdateOwnedBuildings();
@@ -105,6 +136,9 @@ public class EnergyDrink : MonoBehaviour
         Invoke(nameof(StopBoost), 30);
     }
 
+    /// <summary>
+    /// Increases the clicking multiplier by 420x for 15 seconds.
+    /// </summary>
     private void IncreasedClicking()
     {
         clicker.ClickMultiplier = 420;
@@ -113,6 +147,9 @@ public class EnergyDrink : MonoBehaviour
         Invoke(nameof(StopBoost), 15);
     }
 
+    /// <summary>
+    /// Stops the boost by reseting the multipliers and stops possible invoked methords.
+    /// </summary>
     private void StopBoost()
     {
         clicker.ProductionMultiplier = 1;

@@ -3,7 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Settings : MonoBehaviour
+public class Menu : MonoBehaviour
 {
     [SerializeField] private GameObject settings;
     [SerializeField] private GameObject shop;
@@ -32,33 +32,59 @@ public class Settings : MonoBehaviour
         SetupButtons();
     }
 
+    /// <summary>
+    /// Changes the keyboard image.
+    /// </summary>
+    /// <param name="version">Placement of the image in the sprites array.</param>
     private void SetupKeyboard(int version) => keyboardButton.image.sprite = keyboardVersions[version];
+
+    /// <summary>
+    /// Changes the background image.
+    /// </summary>
+    /// <param name="version">Placement of the image in the sprites array.</param>
     private void SetupBackground(int version) => backgroundImage.sprite = backgroundVersions[version];
 
+    /// <summary>
+    /// Switches to the next keyboard image in the array.
+    /// </summary>
     public void SelecNexttKeyboard()
     {
         currentKeyboardVersion = SelectNext(currentKeyboardVersion);
         SetupKeyboard(currentKeyboardVersion);
     }
 
+    /// <summary>
+    /// Switches to the previous keyboard image in the array.
+    /// </summary>
     public void SelectPreviousKeyboard()
     {
         currentKeyboardVersion = SelectPrevious(currentKeyboardVersion);
         SetupKeyboard(currentKeyboardVersion);
     }
 
+    /// <summary>
+    /// Switches to the next background image in the array.
+    /// </summary>
     public void SelectNextBackground()
     {
         currentBackgroundVersion = SelectNext(currentBackgroundVersion);
         SetupBackground(currentBackgroundVersion);
     }
 
+    /// <summary>
+    /// Switches to the previous background image in the array.
+    /// </summary>
     public void SelectPreviousBackground()
     {
         currentBackgroundVersion = SelectPrevious(currentBackgroundVersion);
         SetupBackground(currentBackgroundVersion);
     }
 
+    /// <summary>
+    /// Updates the current version of an image to the next one.
+    /// </summary>
+    /// <param name="currentVersion">Current version of the image.</param>
+    /// <returns></returns>
     private int SelectNext(int currentVersion)
     {
         currentVersion++;
@@ -71,6 +97,11 @@ public class Settings : MonoBehaviour
         return currentVersion;
     }
 
+    /// <summary>
+    /// Updates the current version of an image to the previous one.
+    /// </summary>
+    /// <param name="currentVersion">Current version of the image.</param>
+    /// <returns></returns>
     private int SelectPrevious(int currentVersion)
     {
         currentVersion--;
@@ -83,6 +114,10 @@ public class Settings : MonoBehaviour
         return currentVersion;
     }
 
+    /// <summary>
+    /// Displays the correct panel when the corresponding button is clicked.
+    /// Disables the button of the active panel to avoid confusion.
+    /// </summary>
     public void SwitchBetweenBuildingsAndUpgrades()
     {
         if (buildings != null && upgrades != null)
@@ -96,12 +131,17 @@ public class Settings : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Opens the menu and closes any other panel.
+    /// If the menu is already open, it closes it and opens the shop.
+    /// </summary>
     public void OpenMenu()
     {
         if (menu != null)
         {
             var activePanels = sidePanels.Where(panel => panel.activeSelf).ToList();
 
+            // In case the player wants to access the menu from a different panel than the shop
             if (activePanels.Count > 0)
             {
                 foreach (var panel in activePanels)
@@ -115,9 +155,14 @@ public class Settings : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Opens the panel and closes the parent panel or vice versa.
+    /// </summary>
+    /// <param name="panel">Panel whose visibility we're changing.</param>
+    /// <param name="parent">The panel that was displayed before/should be displayed after.</param>
     private void OpenPanel(GameObject panel, GameObject parent)
     {
-        if (panel != null)
+        if (panel != null && parent != null)
         {
             bool isActive = panel.activeSelf;
             panel.SetActive(!isActive);
@@ -125,6 +170,9 @@ public class Settings : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Assigns the correct functions to the buttons from the menu.
+    /// </summary>
     public void SetupButtons()
     {
         menu.transform.Find("Settings").gameObject.GetComponent<Button>().onClick.AddListener(() => OpenPanel(settings, menu));
