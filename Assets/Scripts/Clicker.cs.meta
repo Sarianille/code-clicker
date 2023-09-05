@@ -12,7 +12,7 @@ MonoImporter:
   - keyboardVer5: {fileID: 21300000, guid: afe6e06e3aef28d4cbd3d188ff81547b, type: 3}
   - keyboardVer6: {fileID: 21300000, guid: 8dff678b46948454da141d20422aee30, type: 3}
   - keyboard: {instanceID: 0}
-  executionOrder: 0
+  executionOrder: -20
   icon: {instanceID: 0}
   userData: 
   assetBundleName: 
