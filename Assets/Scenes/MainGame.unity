@@ -52948,6 +52948,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3487096701643625722}
     - target: {fileID: 4647632660848060616, guid: a104588397096204a978fb2e62873249, type: 3}
+      propertyPath: achievements
+      value: 
+      objectReference: {fileID: 233429284}
+    - target: {fileID: 4647632660848060616, guid: a104588397096204a978fb2e62873249, type: 3}
       propertyPath: notification
       value: 
       objectReference: {fileID: 233429285}
