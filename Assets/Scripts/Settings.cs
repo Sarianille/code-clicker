@@ -1,19 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Settings : MonoBehaviour
 {
-    [SerializeField] private Sprite keyboardVer1;
-    [SerializeField] private Sprite keyboardVer2;
-    [SerializeField] private Sprite keyboardVer3;
-    [SerializeField] private Sprite keyboardVer4;
-    [SerializeField] private Sprite keyboardVer5;
-    [SerializeField] private Sprite keyboardVer6;
-    [SerializeField] private Button keyboardButton;
-
     [SerializeField] private GameObject settings;
     [SerializeField] private GameObject shop;
     [SerializeField] private GameObject menu;
@@ -21,127 +12,75 @@ public class Settings : MonoBehaviour
     [SerializeField] private GameObject upgrades;
     [SerializeField] private GameObject achievements;
     [SerializeField] private GameObject multiplayer;
+    [SerializeField] private GameObject host;
+    [SerializeField] private GameObject join;
+    private GameObject[] sidePanels;
 
-    [SerializeField] private Button buildingsButton;
-    [SerializeField] private Button upgradesButton;
-    [SerializeField] private Button achievementsButton;
-    [SerializeField] private Button settingsButton;
-    [SerializeField] private Button backButton;
-    [SerializeField] private Button multiplayerButton;
-    [SerializeField] private Button backMenuButton;
-
-    [SerializeField] private Sprite backgroundVer1;
-    [SerializeField] private Sprite backgroundVer2;
-    [SerializeField] private Sprite backgroundVer3;
-    [SerializeField] private Sprite backgroundVer4;
-    [SerializeField] private Sprite backgroundVer5;
-    [SerializeField] private Sprite backgroundVer6;
+    [SerializeField] private Button keyboardButton;
     [SerializeField] private Image backgroundImage;
+    [SerializeField] private Sprite[] keyboardVersions;
+    private int currentKeyboardVersion = 0;
+    [SerializeField] private Sprite[] backgroundVersions;
+    private int currentBackgroundVersion = 0;
 
-    [SerializeField] private GameObject hostButton;
-    [SerializeField] private GameObject joinButton;
-    [SerializeField] private GameObject publicHostButton;
-    [SerializeField] private GameObject privateHostButton;
-    [SerializeField] private GameObject privateHostText;
-    [SerializeField] private GameObject publicJoinButton;
-    [SerializeField] private GameObject privateJoinText;
-    [SerializeField] private GameObject privateJoinInput;
-    [SerializeField] private GameObject backMultiplayer;
-    [SerializeField] private GameObject startGame;
-    [SerializeField] private GameObject playerAmount;
-
-    class Keyboard
-    {
-        public Sprite[] versions;
-        public int currentKeyboardVersion = 0;
-    }
-
-    class Background
-    {
-        public Sprite[] versions;
-        public int currentBackgroundVersion = 0;
-    }
-
-    private Keyboard keyboard = new Keyboard();
-    private Background background = new Background();
-
-    // Start is called before the first frame update
     void Start()
     {
-        SetupGraphics();
-        SetupKeyboard(keyboard.currentKeyboardVersion);
-        SetupBackground(background.currentBackgroundVersion);
+        sidePanels = new GameObject[] { settings, achievements, multiplayer, host, join };
+
+        SetupKeyboard(currentKeyboardVersion);
+        SetupBackground(currentBackgroundVersion);
         SetupButtons();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    public void SetupGraphics()
-    {
-        keyboard.versions = new Sprite[] { keyboardVer1, keyboardVer2, keyboardVer3, keyboardVer4, keyboardVer5, keyboardVer6 };
-        background.versions = new Sprite[] { backgroundVer1, backgroundVer2, backgroundVer3, backgroundVer4, backgroundVer5, backgroundVer6 };
-    }
+    private void SetupKeyboard(int version) => keyboardButton.image.sprite = keyboardVersions[version];
+    private void SetupBackground(int version) => backgroundImage.sprite = backgroundVersions[version];
 
     public void SelecNexttKeyboard()
     {
-        keyboard.currentKeyboardVersion++;
-
-        if (keyboard.currentKeyboardVersion > 5)
-        {
-            keyboard.currentKeyboardVersion = 0;
-        }
-
-        SetupKeyboard(keyboard.currentKeyboardVersion);
+        currentKeyboardVersion = SelectNext(currentKeyboardVersion);
+        SetupKeyboard(currentKeyboardVersion);
     }
 
     public void SelectPreviousKeyboard()
     {
-        keyboard.currentKeyboardVersion--;
-
-        if (keyboard.currentKeyboardVersion < 0)
-        {
-            keyboard.currentKeyboardVersion = 5;
-        }
-
-        SetupKeyboard(keyboard.currentKeyboardVersion);
-    }
-
-    public void SetupKeyboard(int version)
-    {
-        keyboardButton.image.sprite = keyboard.versions[version];
+        currentKeyboardVersion = SelectPrevious(currentKeyboardVersion);
+        SetupKeyboard(currentKeyboardVersion);
     }
 
     public void SelectNextBackground()
     {
-        background.currentBackgroundVersion++;
-
-        if (background.currentBackgroundVersion > 5)
-        {
-            background.currentBackgroundVersion = 0;
-        }
-
-        SetupBackground(background.currentBackgroundVersion);
+        currentBackgroundVersion = SelectNext(currentBackgroundVersion);
+        SetupBackground(currentBackgroundVersion);
     }
 
     public void SelectPreviousBackground()
     {
-        background.currentBackgroundVersion--;
-
-        if (background.currentBackgroundVersion < 0)
-        {
-            background.currentBackgroundVersion = 5;
-        }
-
-        SetupBackground(background.currentBackgroundVersion);
+        currentBackgroundVersion = SelectPrevious(currentBackgroundVersion);
+        SetupBackground(currentBackgroundVersion);
     }
 
-    public void SetupBackground(int version)
+    private int SelectNext(int currentVersion)
     {
-        backgroundImage.sprite = background.versions[version];
+        currentVersion++;
+
+        if (currentVersion > 5)
+        {
+            currentVersion = 0;
+        }
+
+        return currentVersion;
+    }
+
+    private int SelectPrevious(int currentVersion)
+    {
+        currentVersion--;
+
+        if (currentVersion < 0)
+        {
+            currentVersion = 5;
+        }
+
+        return currentVersion;
     }
 
     public void SwitchBetweenBuildingsAndUpgrades()
@@ -152,8 +91,8 @@ public class Settings : MonoBehaviour
             buildings.SetActive(!isActive);
             upgrades.SetActive(isActive);
 
-            buildingsButton.interactable = isActive;
-            upgradesButton.interactable = !isActive;
+            shop.transform.Find("Shop Buttons/Buildings").gameObject.GetComponent<Button>().interactable = isActive;
+            shop.transform.Find("Shop Buttons/Upgrades").gameObject.GetComponent<Button>().interactable = !isActive;
         }
     }
 
@@ -161,10 +100,14 @@ public class Settings : MonoBehaviour
     {
         if (menu != null)
         {
-            if (settings.activeSelf || achievements.activeSelf)
+            var activePanels = sidePanels.Where(panel => panel.activeSelf).ToList();
+
+            if (activePanels.Count > 0)
             {
-                settings.SetActive(false);
-                achievements.SetActive(false);
+                foreach (var panel in activePanels)
+                {
+                    panel.SetActive(false);
+                }
             }
             bool isActive = menu.activeSelf;
             menu.SetActive(!isActive);
@@ -172,69 +115,27 @@ public class Settings : MonoBehaviour
         }
     }
 
-    private void OpenPanel(GameObject panel)
+    private void OpenPanel(GameObject panel, GameObject parent)
     {
         if (panel != null)
         {
             bool isActive = panel.activeSelf;
             panel.SetActive(!isActive);
-            menu.SetActive(isActive);
+            parent.SetActive(isActive);
         }
     }
 
     public void SetupButtons()
     {
-        settingsButton.onClick.AddListener(() => OpenPanel(settings));
-        achievementsButton.onClick.AddListener(() => OpenPanel(achievements));
-        backButton.onClick.AddListener(() => OpenPanel(settings));
-        multiplayerButton.onClick.AddListener(() => OpenPanel(multiplayer));
-        backMenuButton.onClick.AddListener(() => OpenPanel(multiplayer));
+        menu.transform.Find("Settings").gameObject.GetComponent<Button>().onClick.AddListener(() => OpenPanel(settings, menu));
+        menu.transform.Find("Achievements").gameObject.GetComponent<Button>().onClick.AddListener(() => OpenPanel(achievements, menu));
+        menu.transform.Find("Multiplayer").gameObject.GetComponent<Button>().onClick.AddListener(() => OpenPanel(multiplayer, menu));
+        settings.transform.Find("Back").gameObject.GetComponent<Button>().onClick.AddListener(() => OpenPanel(settings, menu));
+        multiplayer.transform.Find("BackToMenu").gameObject.GetComponent<Button>().onClick.AddListener(() => OpenPanel(multiplayer, menu));
+        multiplayer.transform.Find("Host").gameObject.GetComponent<Button>().onClick.AddListener(() => OpenPanel(host, multiplayer));
+        host.transform.Find("BackToMultiplayer").gameObject.GetComponent<Button>().onClick.AddListener(() => OpenPanel(host, multiplayer));
+        multiplayer.transform.Find("Join").gameObject.GetComponent<Button>().onClick.AddListener(() => OpenPanel(join, multiplayer));
+        join.transform.Find("BackToMultiplayer").gameObject.GetComponent<Button>().onClick.AddListener(() => OpenPanel(join, multiplayer));
     }
 
-    public void OpenHost()
-    {
-        if (hostButton != null)
-        {
-            Hide();
-            publicHostButton.SetActive(true);
-            privateHostButton.SetActive(true);
-            privateHostText.SetActive(true);
-            backMultiplayer.SetActive(true);
-            startGame.SetActive(true);
-            playerAmount.SetActive(true);
-        }
-    }
-
-    public void OpenJoin()
-    {
-        if (joinButton != null)
-        {
-            Hide();
-            publicJoinButton.SetActive(true);
-            privateJoinText.SetActive(true);
-            privateJoinInput.SetActive(true);
-            backMultiplayer.SetActive(true);
-        }
-    }
-
-    private void Hide()
-    {
-        joinButton.SetActive(false);
-        hostButton.SetActive(false);
-    }
-
-    public void BackMultiplayer()
-    {
-        backMultiplayer.SetActive(false);
-        publicHostButton.SetActive(false);
-        privateHostButton.SetActive(false);
-        privateHostText.SetActive(false);
-        publicJoinButton.SetActive(false);
-        privateJoinText.SetActive(false);
-        privateJoinInput.SetActive(false);
-        startGame.SetActive(false);
-        playerAmount.SetActive(false);
-        joinButton.SetActive(true);
-        hostButton.SetActive(true);
-    }
 }
