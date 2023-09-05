@@ -12,12 +12,24 @@ public class Homescreen : MonoBehaviour
     {
         await relay.CreateRelay(1);
 
-        panel.SetActive(false);
+        ChangeHomescreenVisibility();
+    }
+
+    public void ChangeHomescreenVisibility()
+    {
+        var isActive = panel.activeSelf;
+
+        panel.SetActive(!isActive);
     }
 
     public void Information()
     {
+        var isActive = panel.transform.Find("Information").gameObject.activeSelf;
 
+        panel.transform.Find("StartGame").gameObject.SetActive(!isActive);
+        panel.transform.Find("Information").gameObject.SetActive(!isActive);
+        panel.transform.Find("Exit").gameObject.SetActive(!isActive);
+        panel.transform.Find("InformationText").gameObject.SetActive(isActive);
     }
 
     public void Exit()
