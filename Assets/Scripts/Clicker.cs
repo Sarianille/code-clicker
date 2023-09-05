@@ -84,7 +84,7 @@ public class Clicker : NetworkBehaviour
         }
         catch (OverflowException ex)
         {
-            //show congrats u broke the game screen
+            GameWon();
         }
     }
 
@@ -153,6 +153,12 @@ public class Clicker : NetworkBehaviour
                 }
             }
         }
+    }
+
+    private void GameWon()
+    {
+        notification.ShowMessage("Too many LOC! You won! Restarting...");
+        Restart();
     }
 
     [ServerRpc(RequireOwnership = false)]
